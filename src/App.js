@@ -1,16 +1,17 @@
-import React, { Suspense, lazy, useEffect  } from "react";
+import React, { Suspense, lazy, useEffect } from "react";
 import { Router, Route, Switch, Redirect } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { AuthenticatedRoutes, UnauthenticatedRoutes } from "./configs/router";
-import axios from 'axios'
-import PublicRoute from './components/PublicRoute'
+import axios from "axios";
+import PublicRoute from "./components/PublicRoute";
 import PrivateRoute from "./components/PrivateRoute";
-import Loading from './components/Loading'
-import "./css/index.css"
-import 'antd/dist/antd.compact.css';
+import Loading from "./components/Loading";
+// import "./css/index.css";
+import "./assets/styles/index.scss";
+import "antd/dist/antd.compact.css";
 import "tabler-react/dist/Tabler.css";
 import { createBrowserHistory } from "history";
-const history = createBrowserHistory()
+const history = createBrowserHistory();
 
 const Components = {};
 for (const c of AuthenticatedRoutes) {
@@ -22,7 +23,7 @@ for (const c of UnauthenticatedRoutes) {
 }
 
 function App() {
-  const isAuthenticated = useSelector((state) => state.auth.isSignedIn)
+  const isAuthenticated = useSelector((state) => state.auth.isSignedIn);
 
   return (
     <Router history={history}>
@@ -61,7 +62,17 @@ function App() {
             />
           );
         })}
-        <Route render={() => (<div>{isAuthenticated ? (<Redirect to="/cart" />) : (<Redirect to="/home" />)} </div>)} />
+        <Route
+          render={() => (
+            <div>
+              {isAuthenticated ? (
+                <Redirect to="/cart" />
+              ) : (
+                <Redirect to="/home" />
+              )}{" "}
+            </div>
+          )}
+        />
       </Switch>
     </Router>
   );
