@@ -49,7 +49,7 @@ const Home = () => {
                   <img src={GucciLogo} alt="" />
                 </a>
                 <div className="pt-5">
-                  <p>Website bán buôn lớn nhất Trung Quốc.</p>
+                  <p>Biểu tượng thời trang sở hữu bởi Ý và Pháp.</p>
                 </div>
               </div>
             </div>
@@ -57,14 +57,17 @@ const Home = () => {
             <div className="col-lg-4 col-md-12 price-table">
               <div className="price-box">
                 <h5>
-                  <strong>Tmall</strong>
+                  <strong>H&M</strong>
                 </h5>
                 <a href="#" target="blank">
                   <img src={HMLogo} alt="" />
                 </a>
                 <div className="pt-5">
                   <p>
-                    Website chuyên hàng hiệu, chính hãng chất lượng lớn nhất TQ.
+                    {
+                      " H&M Hennes & Mauritz AB - Thời trang đa quốc gia của Thụy Điển "
+                    }
+                    .
                   </p>
                 </div>
               </div>
@@ -73,13 +76,13 @@ const Home = () => {
             <div className="col-lg-4 col-md-12 price-table">
               <div className="price-box">
                 <h5>
-                  <strong>Tao bao</strong>
+                  <strong>Louis</strong>
                 </h5>
                 <a href="#" target="blank">
                   <img src={LouisLogo} alt="" />
                 </a>
                 <div className="pt-5">
-                  <p>Website bán lẻ lớn nhất Trung Quốc.</p>
+                  <p> Louis Vuitton -Thời trang xa xỉ của Pháp.</p>
                 </div>
               </div>
             </div>
@@ -89,7 +92,7 @@ const Home = () => {
       {/* Portfolio section*/}
       <section className="page-section" id="services">
         <div className="container">
-          <h2 className="text-center">DỊCH VỤ EASYBUY</h2>
+          <h2 className="text-center">DỊCH VỤ E'DAY</h2>
           <hr className="divider my-4" />
           <div className="row">
             <div className="col-md-4 col-sm-6">
@@ -104,8 +107,8 @@ const Home = () => {
                   <strong>Tìm nguồn hàng</strong>
                 </h4>
                 <p>
-                  Bạn là chủ shop, bạn cần tìm nguồn hàng giá sỉ, chúng tôi sẽ
-                  tìm nguồn hàng với giá xưởng cho bạn.
+                  Bạn là một người thời trang, bạn cần tìm nguồn hàng giá tốt
+                  nhất, chúng tôi sẽ tìm nguồn hàng với giá xưởng cho bạn.
                 </p>
               </div>
             </div>
@@ -122,8 +125,8 @@ const Home = () => {
                   <strong>Vận chuyển hàng hóa</strong>
                 </h4>
                 <p>
-                  Bạn có hàng và cần chuyển qua lại Việt - Trung, chúng tôi sẽ
-                  vận chuyển về kho cho bạn.
+                  Bạn có hàng và cần chuyển qua lại Bắc - Nam, chúng tôi sẽ vận
+                  chuyển về nhà cho bạn.
                 </p>
               </div>
             </div>
@@ -139,7 +142,7 @@ const Home = () => {
                 <h4>
                   <strong>Chuyển đổi tiền tệ</strong>
                 </h4>
-                <p>Chuyển đổi tiền tệ Việt - Trung với giá tối ưu nhất.</p>
+                <p>Chuyển đổi tiền tệ khác nhau với giá tối ưu nhất.</p>
               </div>
             </div>
 
@@ -154,10 +157,7 @@ const Home = () => {
                 <h4>
                   <strong>Phiên dịch - Visa</strong>
                 </h4>
-                <p>
-                  Bạn cần sang Trung Quốc, công tác, du lịch, vui chơi, hãy liên
-                  lạc với chúng tôi.
-                </p>
+                <p>Bạn cần hàng nước ngoài?.</p>
               </div>
             </div>
 
@@ -211,13 +211,13 @@ const Home = () => {
               <p>
                 Với trang thiết bị hiện đại, cùng với quy trình quản lý chuyên
                 nghiệp, đội ngũ nhân viên trẻ trung - năng động - kinh nghiệm,
-                công ty ALIVIET mang đến dịch vụ uy tín, tiến độ giao hàng đảm
+                công ty E'DAY mang đến dịch vụ uy tín, tiến độ giao hàng đảm
                 bảo, giá thành hợp lý nhằm đáp ứng yêu cầu và nhu cầu khác nhau
                 của khách hàng.{" "}
               </p>
               <p>
                 Với phương châm “ Hợp tác để cùng thành công”, và định hướng
-                “Liên tục cải tiến”. ALIVIET đã luôn nỗ lực cả về nhân lực, vật
+                “Liên tục cải tiến”. E'DAY đã luôn nỗ lực cả về nhân lực, vật
                 lực, xây dựng uy tín thương hiệu, niềm tin với khách hàng với
                 những dịch vụ chúng tôi cung cấp.
               </p>
@@ -233,7 +233,7 @@ const Home = () => {
                     "0%": "#108ee9",
                     "100%": "#87d068",
                   }}
-                  percent={30}
+                  percent={50}
                   status="active"
                 />
                 <h5 className="bold">Kinh nghiệm người dùng</h5>
@@ -288,8 +288,8 @@ const Home = () => {
                   <strong>Dịch vụ chuyên nghiệp</strong>
                 </h4>
                 <p>
-                  EasyBuy luôn cố gắng, không ngừng phát triển hơn nữa, để đem
-                  tới sự hài lòng dịch vụ, giải pháp công nghệ tốt nhất tới cho
+                  E'DAY luôn cố gắng, không ngừng phát triển hơn nữa, để đem tới
+                  sự hài lòng dịch vụ, giải pháp công nghệ tốt nhất tới cho
                   khách hàng
                 </p>
               </div>
@@ -389,25 +389,29 @@ const Home = () => {
           <div className="row vertical-align">
             <div className="col-md-6">
               <h3>
-                <strong>Hướng dẫn cài đặt công cụ và đặt hàng</strong>
+                <strong>Hướng dẫn cài đặt App và đặt hàng</strong>
               </h3>
               <p>
-                Chuyên cung cấp dịch vụ đặt hàng, vận chuyển và phân phối hàng
-                hóa Trung Quốc về Việt Nam. Với hệ thống website thông minh, bạn
-                có thể tự lựa chọn sản phẩm, tìm kiếm nguồn hàng, đặt hàng dễ
-                dàng, chính xác, đồng thời theo dõi được tình trạng đơn hàng của
-                mình. Chúng tôi có hệ thống nhiều chi nhánh, đội ngũ chuyên viên
-                nhiệt tình luôn sẵn sàng phục vụ, tốc độ vận chuyển nhanh chóng,
-                giá cả cạnh tranh
+                Chuyên cung cấp dịch vụ đặt hàng online nhanh chóng. Với hệ
+                thống website thông minh, bạn có thể tự lựa chọn sản phẩm, tìm
+                kiếm nguồn hàng, đặt hàng dễ dàng, chính xác, đồng thời theo dõi
+                được tình trạng đơn hàng của mình. Chúng tôi có hệ thống nhiều
+                chi nhánh, đội ngũ chuyên viên nhiệt tình luôn sẵn sàng phục vụ,
+                tốc độ vận chuyển nhanh chóng, giá cả cạnh tranh
               </p>
               <p>
-                Easybuy không ngừng nỗ lực phấn đấu và phát triển để trở thành
-                top 20 doanh nghiệp hàng đầu về lĩnh vực vận chuyển hàng hóa,
-                quản lý hàng hóa qua hệ thống Logistics.
+                E'DAY không ngừng nỗ lực phấn đấu và phát triển để trở thành top
+                20 doanh nghiệp hàng đầu về lĩnh vực thời trang, quản lý hàng
+                hóa qua hệ thống Logistics.
               </p>
             </div>
             <div className="col-md-6">
-              <p>video here</p>
+              {/* <p>video here</p> */}
+              <iframe
+                width="500"
+                height="315"
+                src="https://www.youtube.com/embed/n2pceP_Zuek"
+              ></iframe>
             </div>
           </div>
         </div>
