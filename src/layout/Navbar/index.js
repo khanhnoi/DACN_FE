@@ -16,29 +16,33 @@ import {
 const { Header, Sider, Content } = Layout;
 
 const Navbar = (props) => {
-  // const product = useSelector((state) => state.products);
   const { toggle, collapsed } = props;
-  // const [collapsed, setCollapsed] = useState(false);
   const contentMenus = [
     {
       Icon: <UserOutlined style={{ marginRight: "10px" }} />,
       text: "Quản lý Người Dùng",
+      link: "/users",
     },
     {
       Icon: <VideoCameraOutlined />,
       text: "Quản lý Sản Phẩm",
+      link: "/products",
     },
     {
       Icon: <UploadOutlined />,
       text: "Quản Lý Kho",
+      link: "/products",
+      // link: "/store",
     },
     {
       Icon: <UserOutlined />,
       text: "Quản Lý Nhân Viên",
+      link: "/staff",
     },
     {
       Icon: <UserOutlined />,
       text: "Khách Hàng Thân Thiện",
+      link: "/friendly-customter",
     },
   ];
 
@@ -46,9 +50,12 @@ const Navbar = (props) => {
     <>
       <Sider trigger={null} collapsible collapsed={collapsed}>
         <div className="logo" />
-        <Menu theme="dark" mode="inline" defaultSelectedKeys={["1"]}>
+        <Menu theme="dark" mode="inline" defaultSelectedKeys={["0"]}>
           {contentMenus.map((menu, index) => (
-            <Menu.Item key={index}>
+            <Menu.Item
+              key={index}
+              onClick={() => props.history.push(menu.link)}
+            >
               {menu.Icon}
               <span>{menu.text}</span>
             </Menu.Item>
