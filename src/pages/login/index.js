@@ -1,21 +1,27 @@
 import React from "react";
-import { useDispatch } from 'react-redux';
+import { useDispatch } from "react-redux";
 import { Form, Input, Button, Col } from "antd";
-import {
-  UserOutlined,
-  LockOutlined
-} from "@ant-design/icons";
+import { UserOutlined, LockOutlined } from "@ant-design/icons";
 import { Link } from "react-router-dom";
-import { Box, LoginForm } from './styled'
-import { signIn } from '../../actions/authAction'
+import { Box, LoginForm } from "./styled";
+import { signIn } from "../../actions/authAction";
 
 const Login = (props) => {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
+
+  const initialValuesForm = { email: "test@gmail.com", password: "test" };
 
   const handleSubmit = (values) => {
-    const { email, password } = values
-    dispatch(signIn(email, password))
-  }
+    const { email, password } = values;
+    // console.log(values);
+    if (email && password) {
+      dispatch(signIn(email, password));
+    }
+  };
+
+  const onFinishFailed = (errorInfo) => {
+    console.log("Failed:", errorInfo);
+  };
 
   return (
     <div>
@@ -32,6 +38,8 @@ const Login = (props) => {
               <Form
                 className="login-form"
                 onFinish={handleSubmit}
+                onFinishFailed={onFinishFailed}
+                initialValues={initialValuesForm}
                 {...{ labelCol: { span: 8 }, wrapperCol: { span: 16 } }}
               >
                 <Form.Item
@@ -45,7 +53,11 @@ const Login = (props) => {
                     },
                   ]}
                 >
-                  <Input prefix={<UserOutlined />} placeholder="email" />
+                  <Input
+                    prefix={<UserOutlined />}
+                    placeholder="email"
+                    defaultValue={initialValuesForm.email}
+                  />
                 </Form.Item>
                 <Form.Item
                   label="Password"
@@ -57,6 +69,7 @@ const Login = (props) => {
                   <Input.Password
                     prefix={<LockOutlined />}
                     placeholder="Password"
+                    defaultValue={initialValuesForm.password}
                   />
                 </Form.Item>
                 <Form.Item
@@ -80,7 +93,9 @@ const Login = (props) => {
                   >
                     Log in
                   </Button>
-                  &nbsp;Or <Link to="/register">register now!</Link>
+
+                  {/* Team remove reg func */}
+                  {/* &nbsp;Or <Link to="/register">register now!</Link> */}
                 </Form.Item>
               </Form>
             </div>

@@ -8,30 +8,30 @@ import {
   VIEW_PRODUCT_DETAIL,
   ADD_PRODUCTS,
 } from "./types";
-import { notification } from 'antd';
+import { notification } from "antd";
 
 export const fetchProducts = () => async (dispatch) => {
-  await api
-    .get("./viewcart")
-    .then((res) => res.data)
-    .then((res) => {
-      dispatch({ type: FETCH_PRODUCTS, payload: res.data.listProduct });
-    })
-    .catch((err) => {
-      throw new Error(err.message);
-    });
+  // await api
+  //   .get("./viewcart")
+  //   .then((res) => res.data)
+  //   .then((res) => {
+  //     dispatch({ type: FETCH_PRODUCTS, payload: res.data.listProduct });
+  //   })
+  //   .catch((err) => {
+  //     throw new Error(err.message);
+  //   });
 };
 
 export const fetchAllProduct = () => async (dispatch) => {
-  await api
-    .get("./allproduct")
-    .then((res) => res.data)
-    .then((res) => {
-      dispatch({ type: FETCH_ALL_PRODUCT, payload: res.data });
-    })
-    .catch((err) => {
-      throw new Error(err.message);
-    });
+  // await api
+  //   .get("./allproduct")
+  //   .then((res) => res.data)
+  //   .then((res) => {
+  //     dispatch({ type: FETCH_ALL_PRODUCT, payload: res.data });
+  //   })
+  //   .catch((err) => {
+  //     throw new Error(err.message);
+  //   });
 };
 
 export const viewProductDetail = (id) => async (dispatch) => {
@@ -87,7 +87,16 @@ export const deleteProducts = (id) => async (dispatch) => {
     });
 };
 
-export const addProductToCart = ({product_key, resource, product_name, quality, price, description, thumbnails, product_url}) => async (dispatch) => {
+export const addProductToCart = ({
+  product_key,
+  resource,
+  product_name,
+  quality,
+  price,
+  description,
+  thumbnails,
+  product_url,
+}) => async (dispatch) => {
   await api
     .post("./addtocart", {
       product_key,
@@ -103,7 +112,7 @@ export const addProductToCart = ({product_key, resource, product_name, quality, 
     .then((res) => {
       console.log(res);
       if (res.code === 200) {
-        dispatch({ type: ADD_PRODUCTS, payload: res.data })
+        dispatch({ type: ADD_PRODUCTS, payload: res.data });
         notification["success"]({
           message: "Thêm vào giỏ hàng thành công",
           duration: 1,
@@ -122,5 +131,4 @@ export const addProductToCart = ({product_key, resource, product_name, quality, 
         duration: 1,
       });
     });
-  ;
-}
+};

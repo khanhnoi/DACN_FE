@@ -9,7 +9,7 @@ const Footer = () => {
         <Col>
           <Content>
             <p type="flex" justify="space-around" align="middle">
-              Copyright ©2021 By Khanh Noi
+              Copyright ©2021 By Team Khanh Noi
             </p>
           </Content>
         </Col>

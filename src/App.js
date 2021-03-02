@@ -18,13 +18,14 @@ for (const c of AuthenticatedRoutes) {
   Components[c.component] = lazy(() => import(`./pages/` + c.component));
 }
 
+//home, login, logout
 for (const c of UnauthenticatedRoutes) {
   Components[c.component] = lazy(() => import("./pages/" + c.component));
 }
 
 function App() {
   const isAuthenticated = useSelector((state) => state.auth.isSignedIn);
-
+  console.log("isAuthenticated: " + isAuthenticated);
   return (
     <Router history={history}>
       <Switch>

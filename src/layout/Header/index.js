@@ -10,23 +10,25 @@ import logo from "../../assets/images/logo.png";
 import userIcon from "../../assets/images/icon-user.png";
 import api from "../../apis/index";
 
-const Header = (props) => {
+const HeaderLayout = (props) => {
   const isSignedIn = useSelector((state) => state.auth.isSignedIn);
   const username = useSelector((state) => state.auth.profile?.name);
   const dispatch = useDispatch();
 
+  //Check your account every page turn
   useEffect(() => {
     if (isSignedIn) {
-      api.defaults.headers.common[
-        "Authorization"
-      ] = `Bearer ${window.localStorage.getItem("token_jwt_easybuy")}`;
+      // api.defaults.headers.common[
+      //   "Authorization"
+      // ] = `Bearer ${window.localStorage.getItem("token_jwt_eday")}`;
+
       dispatch(getUser());
     }
   }, [dispatch]);
 
-  const menu = (
+  const Menus = (
     <Menu>
-      <Menu.Item key="0" onClick={() => props.history.push('/profile')}>
+      <Menu.Item key="0" onClick={() => props.history.push("/profile")}>
         <EyeOutlined />
         View Profile
       </Menu.Item>
@@ -38,7 +40,7 @@ const Header = (props) => {
   );
 
   return (
-    <HeaderContainer >
+    <HeaderContainer>
       <Row type="flex" justify="space-around" align="middle">
         <Col span={12}>
           <Logo>
@@ -62,18 +64,17 @@ const Header = (props) => {
             </LoginButton>
           ) : (
             <>
-            <LoginButton>
-              <img src={userIcon} style={{ width: 20, height: 20 }} />
-              <Dropdown overlay={menu} trigger={["click"]}>
-                <a
-                  className="ant-dropdown-link"
-                  onClick={(e) => e.preventDefault()}
-                >
-                  {username} <DownOutlined />
-                </a>
-              </Dropdown>
-            </LoginButton>
-              
+              <LoginButton>
+                <img src={userIcon} style={{ width: 20, height: 20 }} />
+                <Dropdown overlay={Menus} trigger={["click"]}>
+                  <a
+                    className="ant-dropdown-link"
+                    onClick={(e) => e.preventDefault()}
+                  >
+                    {username} <DownOutlined />
+                  </a>
+                </Dropdown>
+              </LoginButton>
             </>
           )}
         </Col>
@@ -82,4 +83,4 @@ const Header = (props) => {
   );
 };
 
-export default withRouter(Header);
+export default withRouter(HeaderLayout);
