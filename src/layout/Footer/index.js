@@ -7,11 +7,11 @@ const Footer = () => {
     <div>
       <StyledRow>
         <Col>
-          <Content>
-            <p type="flex" justify="space-around" align="middle">
-              Copyright ©2021 By Team Khanh Noi
-            </p>
-          </Content>
+          {/* <Content> */}
+          <p type="flex" justify="space-around" align="middle">
+            Copyright ©2021 By Team Khanh Noi
+          </p>
+          {/* </Content> */}
         </Col>
       </StyledRow>
     </div>

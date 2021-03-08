@@ -11,7 +11,7 @@ import {
   VideoCameraOutlined,
   UploadOutlined,
 } from "@ant-design/icons";
-import { Button, Typography } from "antd";
+import { Button, Typography, Modal } from "antd";
 import { colors } from "tabler-react";
 import MenuItem from "antd/lib/menu/MenuItem";
 import ContentLayout from "../layout/Content";
@@ -39,6 +39,7 @@ const PrivateRoute = (props) => {
         />
         <ContentLayout>{props.children}</ContentLayout>
       </Layout>
+      <Modal />
 
       <Footer />
     </>

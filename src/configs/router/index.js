@@ -19,6 +19,16 @@ export const UnauthenticatedRoutes = [
 export const AuthenticatedRoutes = [
   {
     exact: true,
+    path: "/users",
+    component: "users",
+  },
+  {
+    exact: true,
+    path: "/users/:id",
+    component: "userDetail",
+  },
+  {
+    exact: true,
     path: "/products",
     component: "products",
   },

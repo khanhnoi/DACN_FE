@@ -2,12 +2,12 @@
 import React, { useEffect, useState } from "react";
 import { Table, Input, Form, Col, Row, Modal } from "antd";
 import { useSelector } from "react-redux";
-import noUserImage from '../../assets/images/no-user-image.gif'
-import { Icon } from 'tabler-react'
+import noUserImage from "../../assets/images/no-user-image.gif";
+import { Icon } from "tabler-react";
 
 const Profile = () => {
-  const data = useSelector(state => state.auth.profile)
-  const [visible, setVisible] = useState(false)
+  const data = useSelector((state) => state.auth.profile);
+  const [visible, setVisible] = useState(false);
 
   const dataSource = [
     {
@@ -46,7 +46,7 @@ const Profile = () => {
     {
       title: "Action",
       key: "action",
-      render: () => <Icon name="edit-3" onClick={() => setVisible(true)}/>,
+      render: () => <Icon name="edit-3" onClick={() => setVisible(true)} />,
     },
   ];
 
@@ -70,8 +70,8 @@ const Profile = () => {
           </div>
           <div>
             <p>
-              Các thông tin quan trọng của Quý Khách như tên đăng nhập Easybuy,
-              mã khách hàng, email dùng để nhận thông báo v.v... Để bảo mật tài
+              Các thông tin quan trọng của Quý Khách như tên đăng nhập E'day, mã
+              khách hàng, email dùng để nhận thông báo v.v... Để bảo mật tài
               khoản, quý khách nên đổi mật khẩu 3 tháng một lần, mật khẩu nên sử
               dụng chữ số và ký tự viết hoa.
             </p>
@@ -97,10 +97,7 @@ const Profile = () => {
           // onFinish={handleSubmit}
           {...{ labelCol: { span: 8 }, wrapperCol: { span: 16 } }}
         >
-          <Form.Item
-            label="Full Name"
-            name="name"
-          >
+          <Form.Item label="Full Name" name="name">
             <Input placeholder="Full Name" />
           </Form.Item>
           <Form.Item
@@ -158,16 +155,13 @@ const Profile = () => {
           >
             <Input placeholder="Phone" />
           </Form.Item>
-          <Form.Item
-            label="Address"
-            name="address"
-          >
+          <Form.Item label="Address" name="address">
             <Input placeholder="Address" />
           </Form.Item>
         </Form>
       </Modal>
     </div>
   );
-}
+};
 
-export default Profile
+export default Profile;

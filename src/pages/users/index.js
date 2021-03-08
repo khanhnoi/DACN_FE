@@ -1,16 +1,25 @@
 /*eslint-disable*/
 import React, { useState, useEffect, useCallback } from "react";
 import { useSelector, useDispatch } from "react-redux";
-// import { fetchUsers } from "../../actions/shopAction";
-import { Row, Col, Select, Table, Button, Checkbox } from "antd";
-import { Icon } from "tabler-react";
-import api from "../../apis/index";
-import { getFakeDataUsers } from "../../apis/fakeApis";
-const { Option } = Select;
 
-import { FAKE_DATA_USERS } from "../../fakeData";
-import { fromPairs } from "lodash";
-import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
+// import { fetchUsers } from "../../actions/shopAction";
+import { Row, Col, Select, Table, Button, Checkbox, Input, Modal } from "antd";
+const { Search } = Input;
+
+// import { Icon } from "tabler-react";
+// import api from "../../apis/index";
+import { getFakeDataUsers } from "../../apis/fakeApis";
+// const { Option } = Select;
+
+// import { FAKE_DATA_USERS } from "../../fakeData";
+// import { fromPairs } from "lodash";
+import {
+  DeleteOutlined,
+  EditOutlined,
+  UserOutlined,
+  ExclamationCircleOutlined,
+} from "@ant-design/icons";
+import { useHistory } from "react-router";
 
 const Users = (props) => {
   const [usersFake, setUsersFake] = useState(null);
@@ -18,6 +27,8 @@ const Users = (props) => {
     state.users ? Object.values(state.users) : null
   );
   const dispatch = useDispatch();
+  const history = useHistory();
+
   useEffect(() => {
     // dispatch(fetchUsers());
     async function fetchFakeAPI() {
@@ -67,11 +78,6 @@ const Users = (props) => {
       key: "role",
     },
     {
-      title: "Role",
-      dataIndex: "role",
-      key: "role",
-    },
-    {
       title: "Active",
       dataIndex: "active",
       key: "active",
@@ -95,14 +101,13 @@ const Users = (props) => {
               style={{ marginRight: "10px" }}
               onClick={() => {
                 console.log(`Edit ${record?.id}`);
+                history.push(`users/${record?.id}`);
               }}
               icon={<EditOutlined />}
             ></Button>
             <Button
               danger
-              onClick={() => {
-                console.log(`Delete ${record?.id}`);
-              }}
+              onClick={() => handleDeleteUser(record?.loginName)}
               icon={<DeleteOutlined />}
             ></Button>
           </span>
@@ -111,8 +116,38 @@ const Users = (props) => {
     },
   ];
 
+  const onSearchUser = (value) => {
+    console.log("Xu Ly Tim Kiem");
+    console.log(value);
+  };
+  const handleDeleteUser = (name) => {
+    Modal.confirm({
+      title: "Cảnh báo",
+      icon: <ExclamationCircleOutlined />,
+      content: `Xoá người dùng ${name}. Khi đã xoá sẽ không thể hoàn tác ...
+      `,
+      okText: "Xoá",
+      cancelText: "Huỷ Bỏ",
+      onOk: () => {
+        console.log("Xu Ly Xoa");
+      },
+    });
+  };
+
   return (
     <div style={{ padding: "20px", minHeight: "calc(100vh - 70px)" }}>
+      <Row style={{ marginBottom: "10px" }}>
+        <Col span={12}>
+          <h5>Quản Lý Người Dùng</h5>
+        </Col>
+        <Col span={12}>
+          <Search
+            placeholder="Tìm kiếm người dùng"
+            onSearch={onSearchUser}
+            enterButton
+          />
+        </Col>
+      </Row>
       <Row>
         <Col span={24}>
           <Table

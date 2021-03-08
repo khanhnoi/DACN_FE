@@ -67,7 +67,7 @@ function App() {
           render={() => (
             <div>
               {isAuthenticated ? (
-                <Redirect to="/cart" />
+                <Redirect to="/users" />
               ) : (
                 <Redirect to="/home" />
               )}{" "}

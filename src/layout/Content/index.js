@@ -15,7 +15,6 @@ const ContentLayout = (props) => {
             minHeight: 280,
           }}
         >
-          Content
           {props.children}
         </Content>
       </Layout>
