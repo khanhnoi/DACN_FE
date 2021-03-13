@@ -18,7 +18,7 @@ export const signIn = (email, password) => async (dispatch) => {
     dispatch({ type: SIGN_IN });
 
     // redtrect url
-    history.push("/cart");
+    history.push("/users");
 
     // Display
     notification["success"]({

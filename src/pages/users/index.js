@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 
 // import { fetchUsers } from "../../actions/shopAction";
 import { Row, Col, Select, Table, Button, Checkbox, Input, Modal } from "antd";
+import { notification } from "antd";
 const { Search } = Input;
 
 // import { Icon } from "tabler-react";
@@ -130,6 +131,11 @@ const Users = (props) => {
       cancelText: "Huỷ Bỏ",
       onOk: () => {
         console.log("Xu Ly Xoa");
+        // Display
+        notification["success"]({
+          message: "Xoá thành công",
+          duration: 3,
+        });
       },
     });
   };

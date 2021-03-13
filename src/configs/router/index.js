@@ -34,13 +34,23 @@ export const AuthenticatedRoutes = [
   },
   {
     exact: true,
-    path: "/cart",
-    component: "cart",
+    path: "/products/add",
+    component: "productAdd",
   },
   {
     exact: true,
-    path: "/users",
-    component: "users",
+    path: "/products/id/:id",
+    component: "productDetail",
+  },
+  {
+    exact: true,
+    path: "/store",
+    component: "store",
+  },
+  {
+    exact: true,
+    path: "/cart",
+    component: "cart",
   },
   {
     exact: true,

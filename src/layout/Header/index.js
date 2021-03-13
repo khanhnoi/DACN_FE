@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Button, Row, Col, Menu, Dropdown } from "antd";
 import { withRouter } from "react-router-dom";
-import { LoginButton, Logo, HeaderContainer } from "./styled";
+import { LoginButton, Logo, HeaderContainer, UserButton } from "./styled";
 import { signOut, getUser } from "../../actions/authAction";
 import { Link } from "react-router-dom";
 import { DownOutlined, EyeOutlined, LogoutOutlined } from "@ant-design/icons";
@@ -49,7 +49,11 @@ const HeaderLayout = (props) => {
             </Link>
           </Logo>
         </Col>
-        <Col lg={{ span: 2, offset: 10 }} xs={{ span: 12 }}>
+        <Col
+          lg={{ span: 2, offset: 10 }}
+          xs={{ span: 12 }}
+          style={{ height: "60px", display: "flex" }}
+        >
           {!isSignedIn ? (
             <LoginButton>
               <Button
@@ -64,17 +68,34 @@ const HeaderLayout = (props) => {
             </LoginButton>
           ) : (
             <>
-              <LoginButton>
-                <img src={userIcon} style={{ width: 20, height: 20 }} />
+              <UserButton>
+                <img
+                  src={userIcon}
+                  style={{
+                    width: 20,
+                    height: 20,
+                    marginTop: "auto",
+                    marginBottom: "auto",
+                    marginRight: "10px",
+                  }}
+                />
                 <Dropdown overlay={Menus} trigger={["click"]}>
-                  <a
+                  <div
                     className="ant-dropdown-link"
+                    style={{ display: "flex", cursor: "pointer" }}
                     onClick={(e) => e.preventDefault()}
                   >
-                    {username} <DownOutlined />
-                  </a>
+                    {username}{" "}
+                    <DownOutlined
+                      style={{
+                        marginTop: "auto",
+                        marginBottom: "auto",
+                        marginLeft: "10px",
+                      }}
+                    />{" "}
+                  </div>
                 </Dropdown>
-              </LoginButton>
+              </UserButton>
             </>
           )}
         </Col>

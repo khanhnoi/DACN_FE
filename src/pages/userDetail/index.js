@@ -11,6 +11,7 @@ import {
   Modal,
   Form,
   Space,
+  notification,
 } from "antd";
 import noUserImage from "../../assets/images/no-user-image.gif";
 import { getFakeDataUser, getFakeRolesUser } from "../../apis/fakeApis";
@@ -29,6 +30,14 @@ const UserDetail = (props) => {
 
   const handleSaveUser = () => {
     console.log("Handling Save......");
+
+    console.log(rolesUser);
+
+    // Display
+    notification["success"]({
+      message: "Lưu thành công",
+      duration: 3,
+    });
   };
 
   const fetchFakeAPI = async () => {

@@ -31,8 +31,7 @@ const Navbar = (props) => {
     {
       Icon: <UploadOutlined />,
       text: "Quản Lý Kho",
-      link: "/products",
-      // link: "/store",
+      link: "/store",
     },
     {
       Icon: <UserOutlined />,

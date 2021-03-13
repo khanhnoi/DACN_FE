@@ -183,7 +183,7 @@ const ProductDetail = (props) => {
         <div style={{ padding: "20px", minHeight: "calc(100vh - 70px)" }}>
           <Row>
             <Col span="24">
-              <h1>Chỉnh sửa sản phẩm {id}</h1>
+              <h1>Thêm sản phẩm (Đang theo Fix SP){id}</h1>
             </Col>
             <Col span={17}>
               <Form
