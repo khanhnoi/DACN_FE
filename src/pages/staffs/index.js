@@ -1,28 +1,19 @@
-/*eslint-disable*/
 import React, { useState, useEffect, useCallback } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { useHistory } from "react-router";
 
-// import { fetchUsers } from "../../actions/shopAction";
 import { Row, Col, Select, Table, Button, Checkbox, Input, Modal } from "antd";
 import { notification } from "antd";
-const { Search } = Input;
-
-// import { Icon } from "tabler-react";
-// import api from "../../apis/index";
-import { getFakeDataUsers } from "../../apis/fakeApis";
-// const { Option } = Select;
-
-// import { FAKE_DATA_USERS } from "../../fakeData";
-// import { fromPairs } from "lodash";
+import { getFakeDataStaffs } from "../../apis/fakeApis";
 import {
   DeleteOutlined,
   EditOutlined,
   UserOutlined,
   ExclamationCircleOutlined,
 } from "@ant-design/icons";
-import { useHistory } from "react-router";
+const { Search } = Input;
 
-const Users = (props) => {
+const Staffs = (props) => {
   const [usersFake, setUsersFake] = useState(null);
   let users = useSelector((state) =>
     state.users ? Object.values(state.users) : null
@@ -31,9 +22,9 @@ const Users = (props) => {
   const history = useHistory();
 
   useEffect(() => {
-    // dispatch(fetchUsers());
+    // dispatch(fetchStaffs());
     async function fetchFakeAPI() {
-      const resUsersFake = await getFakeDataUsers();
+      const resUsersFake = await getFakeDataStaffs();
       setUsersFake(resUsersFake);
     }
     if (!users) {
@@ -54,14 +45,14 @@ const Users = (props) => {
       render: (src) => <img style={{ width: "40px" }} src={src} />,
     },
     {
+      title: "Name",
+      dataIndex: "name",
+      key: "name",
+    },
+    {
       title: "Email",
       dataIndex: "email",
       key: "email",
-    },
-    {
-      title: "Login Name",
-      dataIndex: "loginName",
-      key: "loginName",
     },
     {
       title: "Phone",
@@ -74,9 +65,9 @@ const Users = (props) => {
       key: "address",
     },
     {
-      title: "Role",
-      dataIndex: "role",
-      key: "role",
+      title: "Experience",
+      dataIndex: "experience",
+      key: "experience",
     },
     {
       title: "Active",
@@ -102,13 +93,13 @@ const Users = (props) => {
               style={{ marginRight: "10px" }}
               onClick={() => {
                 console.log(`Edit ${record?.id}`);
-                history.push(`users/id/${record?.id}`);
+                history.push(`staffs/id/${record?.id}`);
               }}
               icon={<EditOutlined />}
             ></Button>
             <Button
               danger
-              onClick={() => handleDeleteUser(record?.loginName)}
+              onClick={() => handleDeleteUser(record?.name)}
               icon={<DeleteOutlined />}
             ></Button>
           </span>
@@ -125,7 +116,7 @@ const Users = (props) => {
     Modal.confirm({
       title: "Cảnh báo",
       icon: <ExclamationCircleOutlined />,
-      content: `Xoá người dùng ${name}. Khi đã xoá sẽ không thể hoàn tác ...
+      content: `Xoá nhân viên ${name}. Khi đã xoá sẽ không thể hoàn tác ...
       `,
       okText: "Xoá",
       cancelText: "Huỷ Bỏ",
@@ -144,11 +135,11 @@ const Users = (props) => {
     <div style={{ padding: "20px", minHeight: "calc(100vh - 70px)" }}>
       <Row style={{ marginBottom: "10px" }}>
         <Col span={12}>
-          <h5>Quản Lý Người Dùng</h5>
+          <h5>Quản Lý Nhân Viên</h5>
         </Col>
         <Col span={12}>
           <Search
-            placeholder="Tìm kiếm người dùng"
+            placeholder="Tìm kiếm nhân viên"
             onSearch={onSearchUser}
             enterButton
           />
@@ -167,4 +158,4 @@ const Users = (props) => {
   );
 };
 
-export default React.memo(Users);
+export default React.memo(Staffs);

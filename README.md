@@ -3,7 +3,7 @@
 Tiến trình Làm DATN
 
 - Srs, họp, dưng mockDesign ( trước tháng 3)
-- Đang build UI, setup folder, thư viện (9/3->14/3)
+- Dành time để stra build UI, setup folder, thư viện (9/3->16/3)
 - Chờ API từ Ngân bên BE (chưa update)
 - Chờ App từ Thanh, Đạt (chưa update)
 

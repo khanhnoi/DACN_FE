@@ -24,7 +24,7 @@ export const AuthenticatedRoutes = [
   },
   {
     exact: true,
-    path: "/users/:id",
+    path: "/users/id/:id",
     component: "userDetail",
   },
   {
@@ -46,6 +46,26 @@ export const AuthenticatedRoutes = [
     exact: true,
     path: "/store",
     component: "store",
+  },
+  {
+    exact: true,
+    path: "/staffs",
+    component: "staffs",
+  },
+  {
+    exact: true,
+    path: "/staffs/id/:id",
+    component: "staffDetail",
+  },
+  {
+    exact: true,
+    path: "/friendly-customter",
+    component: "friendlyCustomer",
+  },
+  {
+    exact: true,
+    path: "/friendly-customter/id/:id",
+    component: "friendlyCustomerDetail",
   },
   {
     exact: true,

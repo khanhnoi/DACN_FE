@@ -7,6 +7,11 @@ import {
   FAKE_DATA_PRODUCT,
   FAKE_DATA_STATUS_PRODUCT,
   FAKE_DATA_STORE,
+  FAKE_DATA_STAFFS,
+  FAKE_DATA_STAFF,
+  FAKE_TEAMS,
+  FAKE_DATA_FRIENDLY_CUSTOMERS,
+  FAKE_DATA_FRIENDLY_CUSTOMER,
 } from "../fakeData";
 
 export const getFakeDataUsers = () => {
@@ -62,6 +67,46 @@ export const getFakeDataStore = () => {
   return new Promise((resolve) => {
     setTimeout(() => {
       resolve(FAKE_DATA_STORE);
+    }, 250);
+  });
+};
+
+export const getFakeDataStaffs = () => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve(FAKE_DATA_STAFFS);
+    }, 250);
+  });
+};
+
+export const getFakeDataStaff = () => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve(FAKE_DATA_STAFF);
+    }, 250);
+  });
+};
+
+export const getFakeRolesStaff = () => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve(FAKE_TEAMS);
+    }, 250);
+  });
+};
+
+export const getFakeDatafriendlyCustomters = () => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve(FAKE_DATA_FRIENDLY_CUSTOMERS);
+    }, 250);
+  });
+};
+
+export const getFakeDatafriendlyCustomer = () => {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve(FAKE_DATA_FRIENDLY_CUSTOMER);
     }, 250);
   });
 };

@@ -85,10 +85,6 @@ const Store = (props) => {
     });
   };
 
-  const handleChangeRated = (value) => {
-    console.log("Change Rated " + value);
-  };
-
   const handleExport = () => {
     console.log("handle  export........");
   };
@@ -130,6 +126,9 @@ const Store = (props) => {
             dataSource={store || storeFake || []}
             pagination={store || storeFake?.length > 10}
           />
+          <div style={{ textAlign: "right", marginTop: "10px" }}>
+            <h5>Tổng Số: 1.000.000 đ</h5>
+          </div>
         </Col>
       </Row>
     </div>

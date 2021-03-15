@@ -36,11 +36,11 @@ const Navbar = (props) => {
     {
       Icon: <UserOutlined />,
       text: "Quản Lý Nhân Viên",
-      link: "/staff",
+      link: "/staffs",
     },
     {
       Icon: <UserOutlined />,
-      text: "Khách Hàng Thân Thiện",
+      text: "KH Thân Thiện",
       link: "/friendly-customter",
     },
   ];
@@ -49,10 +49,15 @@ const Navbar = (props) => {
     <>
       <Sider trigger={null} collapsible collapsed={collapsed}>
         <div className="logo" />
-        <Menu theme="dark" mode="inline" defaultSelectedKeys={["0"]}>
+        <Menu
+          theme="dark"
+          mode="inline"
+          defaultSelectedKeys={["0"]}
+          selectedKeys={props.history.location.pathname}
+        >
           {contentMenus.map((menu, index) => (
             <Menu.Item
-              key={index}
+              key={menu.link}
               onClick={() => props.history.push(menu.link)}
             >
               {menu.Icon}

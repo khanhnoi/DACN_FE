@@ -8,7 +8,7 @@ for (let i = 0; i < 25; i++) {
     email: `user${i}@gmail.com`,
     loginName: `User${i}`,
     phone: `0332186185${i}`,
-    adress: `Đà Nẵng ${i}`,
+    address: `Đà Nẵng ${i}`,
     role: "admin",
     active: i % 3 == 0 ? true : false,
     // func: "xxxx",
@@ -21,7 +21,7 @@ const FAKE_DATA_USER = {
   email: `userTest@gmail.com`,
   name: `User Test`,
   phone: `0332186185`,
-  adress: `Đà Nẵng `,
+  address: `Đà Nẵng `,
   role: "user" || "admin" || "manager",
   // active: true,
 };
@@ -121,11 +121,79 @@ for (let i = 0; i < 25; i++) {
     name: `Product${i}`,
     total: `${i + 3}`,
     unit: `${i * 10000}`,
-    unit_price: "update yet",
+    unitPrice: "update yet",
     inventory: (i + 4) * 5,
     income: (i + 3) * i * 10000,
   });
 }
+
+//staffs fake
+const FAKE_DATA_STAFFS = [];
+for (let i = 0; i < 25; i++) {
+  FAKE_DATA_STAFFS.push({
+    stt: `${i + 1}`,
+    id: `${i}`,
+    avatar: "http://khanhnoi.mobie.in/img/khanh-noi.jpg",
+    email: `staff${i}@gmail.com`,
+    name: `Staff${i}`,
+    phone: `0332186185${i}`,
+    address: `Đà Nẵng ${i}`,
+    experience: i * 10,
+    active: i % 3 == 0 ? true : false,
+  });
+}
+
+const FAKE_DATA_STAFF = {
+  id: `1`,
+  avatar: "http://khanhnoi.mobie.in/img/khanh-noi.jpg",
+  email: `staffTest@gmail.com`,
+  name: `Staff Test`,
+  phone: `0332186185`,
+  address: `Đà Nẵng `,
+  experience: `1 năm`,
+  team: "Áo Thun" || "Quần Jean" || "Đồ Lót",
+};
+
+const FAKE_TEAMS = ["Quần Jean", "Áo Thun", "Đồ Lót"];
+
+//FRINEDLY CUSTOMERS
+const FAKE_DATA_FRIENDLY_CUSTOMERS = [];
+
+for (let i = 0; i < 25; i++) {
+  FAKE_DATA_FRIENDLY_CUSTOMERS.push({
+    stt: `${i + 1}`,
+    id: `${i}`,
+    avatar: "http://khanhnoi.mobie.in/img/khanh-noi.jpg",
+    email: `customer${i}@gmail.com`,
+    loginName: `customer${i}`,
+    phone: `0332186185${i}`,
+    address: `Đà Nẵng ${i}`,
+    point: i * 10,
+    active: i % 3 == 0 ? true : false,
+  });
+}
+
+const dataFriendCustomer = [];
+for (let i = 0; i < 25; i++) {
+  dataFriendCustomer.push({
+    stt: `${i + 1}`,
+    id: `${i}`,
+    name: `Sản phẩm ${i}`,
+    size: `${i * 2}`,
+    amount: `${i}`,
+    price: `${i * 10000}`,
+    payment: i % 3 === 0 ? "Banking" : "Cash",
+    addBuy: i % 2 === 0 ? "Online" : "At Shop",
+    point: i * 10,
+  });
+}
+
+const FAKE_DATA_FRIENDLY_CUSTOMER = {
+  id: 1,
+  avatar: "http://khanhnoi.mobie.in/img/khanh-noi.jpg",
+  name: `customer k`,
+  data: dataFriendCustomer,
+};
 
 export {
   FAKE_DATA_USERS,
@@ -135,4 +203,9 @@ export {
   FAKE_DATA_PRODUCT,
   FAKE_DATA_STATUS_PRODUCT,
   FAKE_DATA_STORE,
+  FAKE_DATA_STAFFS,
+  FAKE_DATA_STAFF,
+  FAKE_TEAMS,
+  FAKE_DATA_FRIENDLY_CUSTOMERS,
+  FAKE_DATA_FRIENDLY_CUSTOMER,
 };

@@ -7,13 +7,7 @@ import { Row, Col, Select, Table, Button, Checkbox, Input, Modal } from "antd";
 import { notification } from "antd";
 const { Search } = Input;
 
-// import { Icon } from "tabler-react";
-// import api from "../../apis/index";
-import { getFakeDataUsers } from "../../apis/fakeApis";
-// const { Option } = Select;
-
-// import { FAKE_DATA_USERS } from "../../fakeData";
-// import { fromPairs } from "lodash";
+import { getFakeDatafriendlyCustomters } from "../../apis/fakeApis";
 import {
   DeleteOutlined,
   EditOutlined,
@@ -22,10 +16,10 @@ import {
 } from "@ant-design/icons";
 import { useHistory } from "react-router";
 
-const Users = (props) => {
-  const [usersFake, setUsersFake] = useState(null);
-  let users = useSelector((state) =>
-    state.users ? Object.values(state.users) : null
+const FriendlyCustomter = (props) => {
+  const [friendlyCustomtersFake, setFriendlyCustomtersFake] = useState(null);
+  let friendlyCustomters = useSelector((state) =>
+    state.friendlyCustomters ? Object.values(state.friendlyCustomters) : null
   );
   const dispatch = useDispatch();
   const history = useHistory();
@@ -33,13 +27,14 @@ const Users = (props) => {
   useEffect(() => {
     // dispatch(fetchUsers());
     async function fetchFakeAPI() {
-      const resUsersFake = await getFakeDataUsers();
-      setUsersFake(resUsersFake);
+      const resFriendlyCustomtersFake = await getFakeDatafriendlyCustomters();
+
+      setFriendlyCustomtersFake(resFriendlyCustomtersFake);
     }
-    if (!users) {
+    if (!friendlyCustomters) {
       fetchFakeAPI();
     }
-  }, [dispatch, usersFake]);
+  }, [dispatch, friendlyCustomtersFake]);
 
   const columns = [
     {
@@ -74,9 +69,9 @@ const Users = (props) => {
       key: "address",
     },
     {
-      title: "Role",
-      dataIndex: "role",
-      key: "role",
+      title: "Point",
+      dataIndex: "point",
+      key: "point",
     },
     {
       title: "Active",
@@ -102,7 +97,7 @@ const Users = (props) => {
               style={{ marginRight: "10px" }}
               onClick={() => {
                 console.log(`Edit ${record?.id}`);
-                history.push(`users/id/${record?.id}`);
+                history.push(`friendly-customter/id/${record?.id}`);
               }}
               icon={<EditOutlined />}
             ></Button>
@@ -144,11 +139,11 @@ const Users = (props) => {
     <div style={{ padding: "20px", minHeight: "calc(100vh - 70px)" }}>
       <Row style={{ marginBottom: "10px" }}>
         <Col span={12}>
-          <h5>Quản Lý Người Dùng</h5>
+          <h5>Quản Lý Khách Hàng Thân Thiện</h5>
         </Col>
         <Col span={12}>
           <Search
-            placeholder="Tìm kiếm người dùng"
+            placeholder="Tìm kiếm khách hàng"
             onSearch={onSearchUser}
             enterButton
           />
@@ -158,8 +153,10 @@ const Users = (props) => {
         <Col span={24}>
           <Table
             columns={columns}
-            dataSource={users || usersFake || []}
-            pagination={users || usersFake?.length > 10}
+            dataSource={friendlyCustomters || friendlyCustomtersFake || []}
+            pagination={
+              friendlyCustomters || friendlyCustomtersFake?.length > 10
+            }
           />
         </Col>
       </Row>
@@ -167,4 +164,4 @@ const Users = (props) => {
   );
 };
 
-export default React.memo(Users);
+export default React.memo(FriendlyCustomter);
