@@ -9,8 +9,10 @@ import {
   MenuUnfoldOutlined,
   MenuFoldOutlined,
   UserOutlined,
-  VideoCameraOutlined,
-  UploadOutlined,
+  ShoppingCartOutlined,
+  AppstoreOutlined,
+  HeartOutlined,
+  UsergroupDeleteOutlined,
 } from "@ant-design/icons";
 
 const { Header, Sider, Content } = Layout;
@@ -24,22 +26,22 @@ const Navbar = (props) => {
       link: "/users",
     },
     {
-      Icon: <VideoCameraOutlined />,
+      Icon: <ShoppingCartOutlined />,
       text: "Quản lý Sản Phẩm",
       link: "/products",
     },
     {
-      Icon: <UploadOutlined />,
+      Icon: <AppstoreOutlined />,
       text: "Quản Lý Kho",
       link: "/store",
     },
     {
-      Icon: <UserOutlined />,
+      Icon: <UsergroupDeleteOutlined />,
       text: "Quản Lý Nhân Viên",
       link: "/staffs",
     },
     {
-      Icon: <UserOutlined />,
+      Icon: <HeartOutlined />,
       text: "KH Thân Thiện",
       link: "/friendly-customter",
     },
