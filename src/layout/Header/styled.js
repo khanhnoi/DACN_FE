@@ -38,7 +38,12 @@ const UserButton = styled.div`
   padding-right: 1em;
   display: flex;
   height: 60px;
-  marginleft: auto;
+  margin-top: auto;
+  margin-bottom: auto;
+  margin-left: auto;
+  position: relative;
+  left: -50px;
+  top: 0;
 `;
 
 const StyledDropdown = styled(Dropdown)`
