@@ -30,6 +30,7 @@ const LoginButton = styled.div`
   display: flex;
   margin-top: auto;
   margin-bottom: auto;
+  margin-left: auto;
 `;
 
 const UserButton = styled.div`
