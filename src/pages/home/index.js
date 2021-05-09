@@ -408,7 +408,7 @@ const Home = () => {
             <div className="col-md-6">
               {/* <p>video here</p> */}
               <iframe
-                width="500"
+                width="100%"
                 height="315"
                 src="https://www.youtube.com/embed/OUVnYQ2enX8"
               ></iframe>

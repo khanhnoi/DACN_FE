@@ -9,7 +9,7 @@ import { signIn } from "../../actions/authAction";
 const Login = (props) => {
   const dispatch = useDispatch();
 
-  const initialValuesForm = { email: "test@gmail.com", password: "test" };
+  const initialValuesForm = { email: "admin@gmail.com", password: "123" };
 
   const handleSubmit = (values) => {
     const { email, password } = values;
