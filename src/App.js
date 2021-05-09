@@ -71,6 +71,7 @@ function App() {
               ) : (
                 <Redirect to="/home" />
               )}{" "}
+              <Redirect to="/home" />
             </div>
           )}
         />

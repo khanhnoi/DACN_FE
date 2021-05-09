@@ -34,6 +34,7 @@ const Users = (props) => {
     // dispatch(fetchUsers());
     async function fetchFakeAPI() {
       const resUsersFake = await getFakeDataUsers();
+      // const resUsers = await getDataUsers();
       setUsersFake(resUsersFake);
     }
     if (!users) {

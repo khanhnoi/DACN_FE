@@ -14,11 +14,13 @@ import {
   ExclamationCircleOutlined,
 } from "@ant-design/icons";
 import { useHistory } from "react-router";
+import { fetchAllProduct } from "../../actions/productAction";
+import imageNotFound from "../../assets/images/image-not-found.jpg";
 
 const Products = (props) => {
   const [productsFake, setProductsFake] = useState(null);
   let products = useSelector((state) =>
-    state.products ? Object.values(state.products) : null
+    state.products ? Object.values(state.products.allProduct) : null
   );
   const dispatch = useDispatch();
   const history = useHistory();
@@ -34,7 +36,9 @@ const Products = (props) => {
       title: "Image",
       dataIndex: "image",
       key: "image",
-      render: (src) => <img style={{ width: "40px" }} src={src} />,
+      render: (src) => (
+        <img style={{ width: "40px" }} src={src ? src : imageNotFound} />
+      ),
     },
     {
       title: "Name",
@@ -45,33 +49,48 @@ const Products = (props) => {
       title: "Description",
       dataIndex: "description",
       key: "description",
+      render: (src) => (src ? src : "No Data"),
+    },
+    {
+      title: "Amount",
+      dataIndex: "amount",
+      key: "amount",
+      render: (src) => (src ? src : "No Data"),
     },
     {
       title: "Size",
       dataIndex: "size",
       key: "size",
+      render: (src) => (src ? src : "No Data"),
     },
     {
       title: "Price",
-      dataIndex: "price",
-      key: "price",
+      dataIndex: "price_sell",
+      key: "price_sell",
+      render: (src) => (src ? src : "No Data"),
     },
     {
       title: "Media",
       dataIndex: "media",
       key: "media",
+      render: (src) => (
+        <img style={{ width: "40px" }} src={src ? src : imageNotFound} />
+      ),
     },
     {
       title: "Rated",
       dataIndex: "rated",
       key: "rated",
-      render: (text, record) => (
-        <Rate
-          tooltips={desc}
-          onChange={handleChangeRated}
-          value={record.rated}
-        />
-      ),
+      render: (text, record) =>
+        record.rated ? (
+          <Rate
+            tooltips={desc}
+            onChange={handleChangeRated}
+            value={record.rated}
+          />
+        ) : (
+          <>No Data</>
+        ),
     },
     {
       title: "Chức Năng",
@@ -106,9 +125,10 @@ const Products = (props) => {
       const resProductsFake = await getFakeDataProducts();
       setProductsFake(resProductsFake);
     }
-    if (!products) {
-      fetchFakeAPI();
-    }
+    dispatch(fetchAllProduct());
+    // if (!products) {
+    //   fetchFakeAPI();
+    // }
   }, [dispatch, productsFake]);
 
   const onSearchProduct = (value) => {
@@ -161,7 +181,14 @@ const Products = (props) => {
         <Col span={24}>
           <Table
             columns={columns}
-            dataSource={products || productsFake || []}
+            dataSource={
+              products?.map((product, index) => ({
+                ...product,
+                stt: index + 1,
+              })) ||
+              productsFake ||
+              []
+            }
             pagination={products || productsFake?.length > 10}
           />
         </Col>

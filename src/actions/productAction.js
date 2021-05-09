@@ -23,15 +23,16 @@ export const fetchProducts = () => async (dispatch) => {
 };
 
 export const fetchAllProduct = () => async (dispatch) => {
-  // await api
-  //   .get("./allproduct")
-  //   .then((res) => res.data)
-  //   .then((res) => {
-  //     dispatch({ type: FETCH_ALL_PRODUCT, payload: res.data });
-  //   })
-  //   .catch((err) => {
-  //     throw new Error(err.message);
-  //   });
+  await api
+    .get("./eday/product/list")
+    .then((res) => res.data)
+    .then((res) => {
+      console.log(res);
+      dispatch({ type: FETCH_ALL_PRODUCT, payload: res.data });
+    })
+    .catch((err) => {
+      throw new Error(err.message);
+    });
 };
 
 export const viewProductDetail = (id) => async (dispatch) => {

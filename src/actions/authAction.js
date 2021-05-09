@@ -60,6 +60,7 @@ export const signIn = (email, password) => async (dispatch) => {
       }
     })
     .catch((err) => {
+      console.log("Error login");
       console.log(err);
       notification["error"]({
         message: err.message,
@@ -71,7 +72,7 @@ export const signIn = (email, password) => async (dispatch) => {
 export const signOut = () => async (dispatch) => {
   dispatch({ type: SIGN_OUT });
   window.localStorage.removeItem("token_jwt_eday");
-  window.localStorage.removeItem("profile");
+  // window.localStorage.removeItem("profile");
   history.push("/login");
   notification["success"]({
     message: "Đăng xuất thành công",
@@ -88,7 +89,7 @@ export const signOut = () => async (dispatch) => {
       if (res.code === 200) {
         dispatch({ type: SIGN_OUT });
         window.localStorage.removeItem("token_jwt_eday");
-        window.localStorage.removeItem("profile");
+        // window.localStorage.removeItem("profile");
         history.push("/login");
         notification["success"]({
           message: "Đăng xuất thành công",
