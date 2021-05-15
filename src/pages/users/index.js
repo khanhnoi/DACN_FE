@@ -145,7 +145,7 @@ const Users = (props) => {
     <div style={{ padding: "20px", minHeight: "calc(100vh - 70px)" }}>
       <Row style={{ marginBottom: "10px" }}>
         <Col span={12}>
-          <h5>Quản Lý Người Dùng</h5>
+          <h5>Quản Lý Người Dùng (Fake)</h5>
         </Col>
         <Col span={12}>
           <Search

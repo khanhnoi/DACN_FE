@@ -20,7 +20,7 @@ import imageNotFound from "../../assets/images/image-not-found.jpg";
 const Products = (props) => {
   const [productsFake, setProductsFake] = useState(null);
   let products = useSelector((state) =>
-    state.products ? Object.values(state.products.allProduct) : null
+    state.products?.allProduct ? Object.values(state.products.allProduct) : null
   );
   const dispatch = useDispatch();
   const history = useHistory();
@@ -119,12 +119,12 @@ const Products = (props) => {
     },
   ];
 
+  async function fetchFakeAPI() {
+    const resProductsFake = await getFakeDataProducts();
+    setProductsFake(resProductsFake);
+  }
+
   useEffect(() => {
-    // dispatch(fetchproducts());
-    async function fetchFakeAPI() {
-      const resProductsFake = await getFakeDataProducts();
-      setProductsFake(resProductsFake);
-    }
     dispatch(fetchAllProduct());
     // if (!products) {
     //   fetchFakeAPI();

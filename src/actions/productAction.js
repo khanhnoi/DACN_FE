@@ -10,18 +10,6 @@ import {
 } from "./types";
 import { notification } from "antd";
 
-export const fetchProducts = () => async (dispatch) => {
-  // await api
-  //   .get("./viewcart")
-  //   .then((res) => res.data)
-  //   .then((res) => {
-  //     dispatch({ type: FETCH_PRODUCTS, payload: res.data.listProduct });
-  //   })
-  //   .catch((err) => {
-  //     throw new Error(err.message);
-  //   });
-};
-
 export const fetchAllProduct = () => async (dispatch) => {
   await api
     .get("./eday/product/list")
@@ -35,17 +23,27 @@ export const fetchAllProduct = () => async (dispatch) => {
     });
 };
 
-export const viewProductDetail = (id) => async (dispatch) => {
+export const fetchDetailProduct = (id) => async (dispatch) => {
   await api
-    .get("./viewdetailproduct", {
-      params: {
-        id: id,
-      },
-    })
+    .get(`./eday/product/${id}/detail`)
     .then((res) => res.data)
     .then((res) => {
       console.log(res);
       dispatch({ type: VIEW_PRODUCT_DETAIL, payload: res.data });
+    })
+    .catch((error) => {
+      throw new Error(error.message);
+    });
+};
+
+//end Code
+
+export const fetchProducts = () => async (dispatch) => {
+  await api
+    .get("./viewcart")
+    .then((res) => res.data)
+    .then((res) => {
+      // dispatch({ type: FETCH_PRODUCTS, payload: res.data.listProduct });
     })
     .catch((err) => {
       throw new Error(err.message);
@@ -131,5 +129,20 @@ export const addProductToCart = ({
         message: err.message,
         duration: 1,
       });
+    });
+};
+
+// add until delete, to delete
+
+export const viewProductDetail = (id) => async (dispatch) => {
+  await api
+    .get(`./eday/product/${id}/detail`)
+    .then((res) => res.data)
+    .then((res) => {
+      console.log(res);
+      dispatch({ type: VIEW_PRODUCT_DETAIL, payload: res.data });
+    })
+    .catch((error) => {
+      throw new Error(error.message);
     });
 };

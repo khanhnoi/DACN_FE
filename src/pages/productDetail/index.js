@@ -19,6 +19,7 @@ import {
   getFakeDataProduct,
   getFakeDataStatusProduct,
 } from "../../apis/fakeApis";
+import { fetchDetailProduct } from "../../actions/productAction";
 
 const { Option } = Select;
 const { TextArea } = Input;
@@ -173,8 +174,8 @@ const ProductDetail = (props) => {
   }
 
   useEffect(() => {
-    // dispatch(fetchProduct(id));
     fetchFakeAPI();
+    dispatch(fetchDetailProduct(id));
   }, [dispatch, product]);
 
   if (product)
