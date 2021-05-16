@@ -8,6 +8,7 @@ const LazyLoading = styled.div`
   flex-direction: row;
   justify-content: center;
   align-items: center;
+  padding-top: 3em;
 `;
 
 export { LazyLoading };

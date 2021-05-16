@@ -13,14 +13,17 @@ import {
   EditOutlined,
   ExclamationCircleOutlined,
 } from "@ant-design/icons";
+import Loading from "../../components/Loading";
 import { NO_DATA, NO_DATA_NUMBER, desc } from "../../contanst";
 import { useHistory } from "react-router";
 import { fetchAllProduct } from "../../actions/productAction";
+import { getAllProductApi } from "../../apis/productApi";
 
 import imageNotFound from "../../assets/images/image-not-found.jpg";
 
 const Products = (props) => {
-  const [productsFake, setProductsFake] = useState(null);
+  // const [productsFake, setProductsFake] = useState(null);
+  // const [products, setProducts] = useState(null);
   let products = useSelector((state) =>
     state.products?.allProduct ? Object.values(state.products.allProduct) : null
   );
@@ -128,11 +131,18 @@ const Products = (props) => {
   }
 
   useEffect(() => {
-    dispatch(fetchAllProduct());
+    console.log({ products });
+    if (products === null) dispatch(fetchAllProduct());
+
     // if (!products) {
     //   fetchFakeAPI();
     // }
-  }, [dispatch, productsFake]);
+
+    // getAllProductApi().then((res) => {
+    //   console.log(res?.data?.data);
+    //   setProducts(res?.data?.data);
+    // });
+  }, [dispatch]);
 
   const onSearchProduct = (value) => {
     console.log("Xu Ly Tim Kiem");
@@ -160,7 +170,7 @@ const Products = (props) => {
   const handleChangeRated = (value) => {
     console.log("Change Rated " + value);
   };
-
+  // if (products)
   return (
     <div style={{ padding: "20px", minHeight: "calc(100vh - 70px)" }}>
       <Row style={{ marginBottom: "10px" }}>
@@ -182,22 +192,27 @@ const Products = (props) => {
       </Row>
       <Row>
         <Col span={24}>
-          <Table
-            columns={columns}
-            dataSource={
-              products?.map((product, index) => ({
-                ...product,
-                stt: index + 1,
-              })) ||
-              productsFake ||
-              []
-            }
-            pagination={products || productsFake?.length > 10}
-          />
+          {products ? (
+            <Table
+              columns={columns}
+              dataSource={
+                products?.map((product, index) => ({
+                  ...product,
+                  stt: index + 1,
+                })) ||
+                productsFake ||
+                []
+              }
+              pagination={products || productsFake?.length > 10}
+            />
+          ) : (
+            <Loading />
+          )}
         </Col>
       </Row>
     </div>
   );
+  return <Loading />;
 };
 
 export default React.memo(Products);

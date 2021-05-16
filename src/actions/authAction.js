@@ -3,6 +3,7 @@ import { SIGN_IN, SIGN_OUT, GET_USER } from "./types";
 import { notification } from "antd";
 import { createBrowserHistory } from "history";
 import axios from "axios";
+import { signinURL } from "../apis/urlsApi";
 const history = createBrowserHistory();
 
 export const signIn = (email, password) => async (dispatch) => {
@@ -35,7 +36,7 @@ export const signIn = (email, password) => async (dispatch) => {
   // return;
 
   api
-    .post("./eday/auth/signin", {
+    .post(signinURL, {
       email,
       password,
     })
@@ -43,11 +44,12 @@ export const signIn = (email, password) => async (dispatch) => {
     // .then((res) => res.data)
     .then((res) => {
       console.log(res);
-      if (res.data.role === "ROLE_ADMIN") {
+      if (res.data.token) {
         window.localStorage.setItem("token_jwt_eday", res.data.token);
-        // window.localStorage.setItem("profile", res.data.user.name);
         dispatch({ type: SIGN_IN });
+
         history.push("/users");
+
         notification["success"]({
           message: "Đăng nhập thành công",
           duration: 1,

@@ -1,10 +1,28 @@
 import api from "./index";
-import { updateProductURL } from "./urlsApi";
+import {
+  getAllProductURL,
+  updateProductURL,
+  createProductURL,
+  getDetailProductURL,
+  getListCategoryURL,
+} from "./urlsApi";
 
-export const createProduct = async (request) => {
-  await api.post("./eday/admin/product/create");
+export const getAllProductApi = async () => {
+  return await api.get(getAllProductURL);
 };
 
-export const updateProduct = async (request) => {
-  return await api.post(updateProductURL);
+export const getProductApi = async (id) => {
+  return await api.get(getDetailProductURL(id));
+};
+
+export const createProductApi = async (request) => {
+  return await api.post(createProductURL, request);
+};
+
+export const updateProductApi = async (request) => {
+  return await api.post(updateProductURL, request);
+};
+
+export const getListCategoryApi = async () => {
+  return await api.get(getListCategoryURL);
 };

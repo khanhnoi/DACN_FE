@@ -23,17 +23,28 @@ import {
   fetchDetailProduct,
   fetchCategorysProduct,
 } from "../../actions/productAction";
-import { NO_DATA, NO_DATA_NUMBER, desc } from "../../contanst";
+import {
+  updateProductApi,
+  getProductApi,
+  getListCategoryApi,
+} from "../../apis/productApi";
+import {
+  NO_DATA,
+  NO_DATA_NUMBER,
+  desc,
+  UPDATE_PRODUCT_SUCCESS,
+  UPDATE_PRODUCT_FAILD,
+} from "../../contanst";
 
 const { Option } = Select;
 const { TextArea } = Input;
 const uploadButton = UploadButton;
 
 const ProductDetail = (props) => {
-  const product = useSelector((state) => state.products?.detailProduct);
+  // const product = useSelector((state) => state.products?.detailProduct);
   const categorys = useSelector((state) => state.products?.categorys);
 
-  // const [product, setProduct] = useState(null);
+  const [product, setProduct] = useState(null);
   const [statusProduct, setStatusProduct] = useState([]);
 
   const [previewVisible, setPreviewVisible] = useState(false);
@@ -170,12 +181,24 @@ const ProductDetail = (props) => {
   }
 
   const handleSaveProduct = (resquest) => {
-    // Display
-    console.log({ resquest });
-    notification["success"]({
-      message: "Lưu thành công",
-      duration: 3,
-    });
+    updateProductApi(resquest)
+      .then((res) => res.data)
+      .then((res) => {
+        if (res.data) {
+          // Display
+          notification["success"]({
+            message: UPDATE_PRODUCT_SUCCESS,
+            duration: 3,
+          });
+        }
+      })
+      .catch((error) => {
+        // Display
+        notification["error"]({
+          message: UPDATE_PRODUCT_FAILD,
+          duration: 3,
+        });
+      });
   };
 
   const onFinish = (values) => {
@@ -191,6 +214,7 @@ const ProductDetail = (props) => {
       inputDay,
     } = values;
     const resquest = {
+      id: id,
       name,
       amount,
       size,
@@ -210,10 +234,12 @@ const ProductDetail = (props) => {
     // fetchFakeAPI();
     async function fetch() {
       await dispatch(fetchCategorysProduct());
-      await dispatch(fetchDetailProduct(id));
+      // await dispatch(fetchDetailProduct(id));
+      // await getListCategoryApi().then((res) => console.log({ res }));
+      await getProductApi(id).then((res) => setProduct(res.data.data));
     }
     fetch();
-  }, [dispatch]);
+  }, [dispatch, id]);
 
   useEffect(() => {}, [categorys]);
   console.log({ product });
@@ -309,7 +335,7 @@ const ProductDetail = (props) => {
                       defaultValue={
                         categorys?.find(
                           (category) => category.id === product?.catId
-                        ).name
+                        )?.name
                       }
                       style={{ width: "150px" }}
                     >
