@@ -8,6 +8,10 @@ export const FETCH_ALL_PRODUCT = "FETCH_ALL_PRODUCT";
 
 export const VIEW_PRODUCT_DETAIL = "VIEW_PRODUCT_DETAIL";
 
+export const GET_CATEGORYS = "GET_CATEGORYS";
+
+//end code
+
 export const ADD_PRODUCTS = "ADD_PRODUCTS";
 
 export const EDIT_PRODUCTS = "EDIT_PRODUCTS";

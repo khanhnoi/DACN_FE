@@ -2,9 +2,10 @@ import _ from "lodash";
 import {
   FETCH_PRODUCTS,
   FETCH_ALL_PRODUCT,
+  VIEW_PRODUCT_DETAIL,
+  GET_CATEGORYS,
   EDIT_PRODUCTS,
   DELETE_PRODUCTS,
-  VIEW_PRODUCT_DETAIL,
   SELECTED_PRODUCTS,
   ADD_PRODUCTS,
 } from "../actions/types";
@@ -26,6 +27,8 @@ export default (state = null, action) => {
       return { ...state, allProduct: { ..._.mapKeys(action.payload, "id") } };
     case VIEW_PRODUCT_DETAIL:
       return { ...state, detailProduct: action.payload };
+    case GET_CATEGORYS:
+      return { ...state, categorys: action.payload };
     // case ADD_PRODUCTS:
     //   return {
     //     ...state,

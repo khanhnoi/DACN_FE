@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   Row,
   Col,
@@ -19,15 +19,21 @@ import {
   getFakeDataProduct,
   getFakeDataStatusProduct,
 } from "../../apis/fakeApis";
-import { fetchDetailProduct } from "../../actions/productAction";
+import {
+  fetchDetailProduct,
+  fetchCategorysProduct,
+} from "../../actions/productAction";
+import { NO_DATA, NO_DATA_NUMBER, desc } from "../../contanst";
 
 const { Option } = Select;
 const { TextArea } = Input;
-
 const uploadButton = UploadButton;
 
 const ProductDetail = (props) => {
-  const [product, setProduct] = useState(null);
+  const product = useSelector((state) => state.products?.detailProduct);
+  const categorys = useSelector((state) => state.products?.categorys);
+
+  // const [product, setProduct] = useState(null);
   const [statusProduct, setStatusProduct] = useState([]);
 
   const [previewVisible, setPreviewVisible] = useState(false);
@@ -142,27 +148,17 @@ const ProductDetail = (props) => {
 
   //end upload img
 
-  const handleSaveProduct = () => {
-    console.log("Handling Save......");
+  // const fetchFakeAPI = async () => {
+  //   const resStatusProduct = await getFakeDataStatusProduct(id);
+  //   setStatusProduct(resStatusProduct);
+  //   console.log("statusProduct");
+  //   console.log(statusProduct);
 
-    // Display
-    notification["success"]({
-      message: "Lưu thành công",
-      duration: 3,
-    });
-  };
-
-  const fetchFakeAPI = async () => {
-    const resStatusProduct = await getFakeDataStatusProduct(id);
-    setStatusProduct(resStatusProduct);
-    console.log("statusProduct");
-    console.log(statusProduct);
-
-    const resProductFake = await getFakeDataProduct(id);
-    setProduct(resProductFake);
-    console.log("resProductFake");
-    console.log(resProductFake);
-  };
+  //   const resProductFake = await getFakeDataProduct(id);
+  //   setProduct(resProductFake);
+  //   console.log("resProductFake");
+  //   console.log(resProductFake);
+  // };
 
   function getBase64(file) {
     return new Promise((resolve, reject) => {
@@ -173,34 +169,86 @@ const ProductDetail = (props) => {
     });
   }
 
-  useEffect(() => {
-    fetchFakeAPI();
-    dispatch(fetchDetailProduct(id));
-  }, [dispatch, product]);
+  const handleSaveProduct = (resquest) => {
+    // Display
+    console.log({ resquest });
+    notification["success"]({
+      message: "Lưu thành công",
+      duration: 3,
+    });
+  };
 
+  const onFinish = (values) => {
+    console.log("onFinish");
+    console.log({ values });
+    const {
+      name,
+      amount,
+      size,
+      price_buy,
+      price_sell,
+      catId,
+      inputDay,
+    } = values;
+    const resquest = {
+      name,
+      amount,
+      size,
+      price_buy,
+      price_sell,
+      catId,
+      inputDay,
+    };
+    handleSaveProduct(resquest);
+  };
+
+  const onFinishFailed = (errorInfo) => {
+    console.log("Failed:", errorInfo);
+  };
+
+  useEffect(() => {
+    // fetchFakeAPI();
+    async function fetch() {
+      await dispatch(fetchCategorysProduct());
+      await dispatch(fetchDetailProduct(id));
+    }
+    fetch();
+  }, [dispatch]);
+
+  useEffect(() => {}, [categorys]);
+  console.log({ product });
   if (product)
     return (
       <>
         <div style={{ padding: "20px", minHeight: "calc(100vh - 70px)" }}>
           <Row>
             <Col span="24">
-              <h1>Chỉnh sửa sản phẩm {id}</h1>
+              <h1>Sản phẩm ID: {product?.id || id}</h1>
             </Col>
             <Col span={17}>
               <Form
                 className="register-form"
                 // onFinish={handleSubmit}
                 initialValues={{
-                  name: product?.name,
-                  description: product?.description,
+                  name: product?.name || NO_DATA,
+                  description: product?.description || NO_DATA,
                   image: product?.image,
                   media: product?.media,
-                  price: product?.price,
-                  rated: product?.rated,
-                  size: product?.size,
-                  status: product?.status,
-                  number: product?.number,
+                  // price:
+                  //   product?.price ||
+                  //   product?.price_sell ||
+                  //   product?.price_buy ||
+                  //   NO_DATA_NUMBER,
+                  price_buy: product?.price_buy || NO_DATA_NUMBER,
+                  price_sell: product?.price_sell || NO_DATA_NUMBER,
+                  rated: product?.rated || NO_DATA_NUMBER,
+                  size: product?.size || NO_DATA_NUMBER,
+                  status: product?.status || NO_DATA,
+                  catId: product?.catId || NO_DATA_NUMBER,
+                  number: product?.number || NO_DATA_NUMBER,
                 }}
+                onFinish={onFinish}
+                onFinishFailed={onFinishFailed}
                 {...{ labelCol: { span: 4 }, wrapperCol: { span: 20 } }}
               >
                 <Form.Item label="Name" name="name">
@@ -211,8 +259,16 @@ const ProductDetail = (props) => {
                   <TextArea rows={4} placeholder="Nhập địa chỉ" />
                 </Form.Item>
 
-                <Form.Item label="Price" name="price">
+                {/* <Form.Item label="Price" name="price">
                   <Input type="number" placeholder="Nhập giá" />
+                </Form.Item> */}
+
+                <Form.Item label="Price Buy" name="price_buy">
+                  <Input type="number" placeholder="Nhập giá mua" />
+                </Form.Item>
+
+                <Form.Item label="Price Sell" name="price_sell">
+                  <Input type="number" placeholder="Nhập giá bán" />
                 </Form.Item>
 
                 <Form.Item label="Size" name="size">
@@ -227,8 +283,9 @@ const ProductDetail = (props) => {
                   />
                 </Form.Item>
 
-                <Form.Item label="Rated">
-                  <Rate value={product?.rated} disabled />
+                <Form.Item label="Rated" name="rated">
+                  <Rate tooltips={desc} />
+                  {/* <Rate value={0} disabled /> */}
                 </Form.Item>
 
                 <Form.Item label="Status" name="status">
@@ -245,29 +302,77 @@ const ProductDetail = (props) => {
                     </Select>
                   </Input.Group>
                 </Form.Item>
+
+                <Form.Item label="Category" name="catId">
+                  <Input.Group compact>
+                    <Select
+                      defaultValue={
+                        categorys?.find(
+                          (category) => category.id === product?.catId
+                        ).name
+                      }
+                      style={{ width: "150px" }}
+                    >
+                      {categorys?.map((category, index) => (
+                        <Option key={category.id} value={category.name}>
+                          {category.name}
+                        </Option>
+                      ))}
+                    </Select>
+                  </Input.Group>
+                </Form.Item>
+
+                <Upload
+                  action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+                  listType={"picture-card" || "picture" || "text"}
+                  fileList={product?.media || [] || fileList}
+                  onPreview={handlePreview}
+                  onChange={handleChange}
+                  onRemove={onGalleryFileRemove}
+                >
+                  {fileList.length >= 8 ? null : (
+                    <div>
+                      <PlusOutlined />
+                      <div style={{ marginTop: 8 }}>Upload</div>
+                    </div>
+                  )}
+                </Upload>
+
+                <Form.Item>
+                  <div
+                    style={{
+                      textAlign: "center",
+                      marginTop: "30px",
+                      width: "100%",
+                    }}
+                  >
+                    <Space size={10}>
+                      <Button
+                        // key="1"
+                        className="btn-default"
+                        type="primary"
+                        // onClick={handleSaveProduct}
+                        htmlType="submit"
+                      >
+                        Lưu
+                      </Button>
+                      <Button
+                        // key="2"
+                        className="btn-default"
+                        onClick={() => props.history.push("/products")}
+                      >
+                        Trở về
+                      </Button>
+                    </Space>
+                  </div>
+                </Form.Item>
               </Form>
             </Col>
 
-            <Col
+            {/* <Col
               span={7}
               style={{ padding: "20px", textAlign: "center" }}
-            ></Col>
-
-            <Upload
-              action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-              listType={"picture-card" || "picture" || "text"}
-              fileList={fileList || product?.media}
-              onPreview={handlePreview}
-              onChange={handleChange}
-              onRemove={onGalleryFileRemove}
-            >
-              {fileList.length >= 8 ? null : (
-                <div>
-                  <PlusOutlined />
-                  <div style={{ marginTop: 8 }}>Upload</div>
-                </div>
-              )}
-            </Upload>
+            ></Col> */}
 
             <Modal
               visible={previewVisible}
@@ -277,28 +382,6 @@ const ProductDetail = (props) => {
             >
               <img alt="example" style={{ width: "100%" }} src={previewImage} />
             </Modal>
-
-            <Col span="24">
-              <div style={{ textAlign: "center", marginTop: "30px" }}>
-                <Space size={10}>
-                  <Button
-                    // key="1"
-                    className="btn-default"
-                    type="primary"
-                    onClick={handleSaveProduct}
-                  >
-                    Lưu
-                  </Button>
-                  <Button
-                    // key="2"
-                    className="btn-default"
-                    onClick={() => props.history.push("/products")}
-                  >
-                    Trở về
-                  </Button>
-                </Space>
-              </div>
-            </Col>
           </Row>
         </div>
       </>

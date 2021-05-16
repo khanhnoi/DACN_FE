@@ -4,15 +4,21 @@ import {
   EDIT_PRODUCTS,
   DELETE_PRODUCTS,
   FETCH_ALL_PRODUCT,
+  GET_CATEGORYS,
   SELECTED_PRODUCTS,
   VIEW_PRODUCT_DETAIL,
   ADD_PRODUCTS,
 } from "./types";
+import {
+  getAllProductURL,
+  getDetailProductURL,
+  getListCategoryURL,
+} from "../apis/urlsApi";
 import { notification } from "antd";
 
 export const fetchAllProduct = () => async (dispatch) => {
   await api
-    .get("./eday/product/list")
+    .get(getAllProductURL)
     .then((res) => res.data)
     .then((res) => {
       console.log(res);
@@ -25,11 +31,24 @@ export const fetchAllProduct = () => async (dispatch) => {
 
 export const fetchDetailProduct = (id) => async (dispatch) => {
   await api
-    .get(`./eday/product/${id}/detail`)
+    .get(getDetailProductURL(id))
     .then((res) => res.data)
     .then((res) => {
       console.log(res);
       dispatch({ type: VIEW_PRODUCT_DETAIL, payload: res.data });
+    })
+    .catch((error) => {
+      throw new Error(error.message);
+    });
+};
+
+export const fetchCategorysProduct = () => async (dispatch) => {
+  await api
+    .get(getListCategoryURL)
+    .then((res) => res.data)
+    .then((res) => {
+      console.log(res);
+      dispatch({ type: GET_CATEGORYS, payload: res.data });
     })
     .catch((error) => {
       throw new Error(error.message);

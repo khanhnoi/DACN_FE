@@ -13,8 +13,10 @@ import {
   EditOutlined,
   ExclamationCircleOutlined,
 } from "@ant-design/icons";
+import { NO_DATA, NO_DATA_NUMBER, desc } from "../../contanst";
 import { useHistory } from "react-router";
 import { fetchAllProduct } from "../../actions/productAction";
+
 import imageNotFound from "../../assets/images/image-not-found.jpg";
 
 const Products = (props) => {
@@ -24,7 +26,6 @@ const Products = (props) => {
   );
   const dispatch = useDispatch();
   const history = useHistory();
-  const desc = ["terrible", "bad", "normal", "good", "wonderful"];
 
   const columns = [
     {
@@ -49,25 +50,25 @@ const Products = (props) => {
       title: "Description",
       dataIndex: "description",
       key: "description",
-      render: (src) => (src ? src : "No Data"),
+      render: (src) => (src ? src : NO_DATA),
     },
     {
       title: "Amount",
       dataIndex: "amount",
       key: "amount",
-      render: (src) => (src ? src : "No Data"),
+      render: (src) => (src ? src : NO_DATA),
     },
     {
       title: "Size",
       dataIndex: "size",
       key: "size",
-      render: (src) => (src ? src : "No Data"),
+      render: (src) => (src ? src : NO_DATA),
     },
     {
       title: "Price",
       dataIndex: "price_sell",
       key: "price_sell",
-      render: (src) => (src ? src : "No Data"),
+      render: (src) => (src ? src : NO_DATA),
     },
     {
       title: "Media",
@@ -81,16 +82,18 @@ const Products = (props) => {
       title: "Rated",
       dataIndex: "rated",
       key: "rated",
-      render: (text, record) =>
-        record.rated ? (
-          <Rate
-            tooltips={desc}
-            onChange={handleChangeRated}
-            value={record.rated}
-          />
-        ) : (
-          <>No Data</>
-        ),
+      render: (text, record) => (
+        // record.rated ?
+        <Rate
+          disabled
+          tooltips={desc}
+          onChange={handleChangeRated}
+          value={record.rated || NO_DATA_NUMBER}
+        />
+      ),
+      // : (
+      //   <>No Data</>
+      // ),
     },
     {
       title: "Chức Năng",
