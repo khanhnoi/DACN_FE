@@ -49,12 +49,12 @@ const Products = (props) => {
       dataIndex: "name",
       key: "name",
     },
-    {
-      title: "Description",
-      dataIndex: "description",
-      key: "description",
-      render: (src) => (src ? src : NO_DATA),
-    },
+    // {
+    //   title: "Description",
+    //   dataIndex: "description",
+    //   key: "description",
+    //   render: (src) => (src ? src : NO_DATA),
+    // },
     {
       title: "Amount",
       dataIndex: "amount",
@@ -68,36 +68,39 @@ const Products = (props) => {
       render: (src) => (src ? src : NO_DATA),
     },
     {
-      title: "Price",
+      title: "Price Sell",
       dataIndex: "price_sell",
       key: "price_sell",
       render: (src) => (src ? src : NO_DATA),
     },
     {
-      title: "Media",
-      dataIndex: "media",
-      key: "media",
-      render: (src) => (
-        <img style={{ width: "40px" }} src={src ? src : imageNotFound} />
-      ),
+      title: "Price Buy",
+      dataIndex: "price_buy",
+      key: "price_buy",
+      render: (src) => (src ? src : NO_DATA),
     },
-    {
-      title: "Rated",
-      dataIndex: "rated",
-      key: "rated",
-      render: (text, record) => (
-        // record.rated ?
-        <Rate
-          disabled
-          tooltips={desc}
-          onChange={handleChangeRated}
-          value={record.rated || NO_DATA_NUMBER}
-        />
-      ),
-      // : (
-      //   <>No Data</>
-      // ),
-    },
+    // {
+    //   title: "Media",
+    //   dataIndex: "media",
+    //   key: "media",
+    //   render: (src) => (
+    //     <img style={{ width: "40px" }} src={src ? src : imageNotFound} />
+    //   ),
+    // },
+    // {
+    //   title: "Rated",
+    //   dataIndex: "rated",
+    //   key: "rated",
+    //   render: (text, record) => (
+    //     // record.rated ?
+    //     <Rate
+    //       disabled
+    //       tooltips={desc}
+    //       onChange={handleChangeRated}
+    //       value={record.rated || NO_DATA_NUMBER}
+    //     />
+    //   ),
+    // },
     {
       title: "Chức Năng",
       dataIndex: "func",
@@ -199,11 +202,9 @@ const Products = (props) => {
                 products?.map((product, index) => ({
                   ...product,
                   stt: index + 1,
-                })) ||
-                productsFake ||
-                []
+                })) || []
               }
-              pagination={products || productsFake?.length > 10}
+              pagination={products.length > 10}
             />
           ) : (
             <Loading />

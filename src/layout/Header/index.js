@@ -18,10 +18,10 @@ const HeaderLayout = (props) => {
   //Check your account every page turn
   useEffect(() => {
     if (isSignedIn) {
-      // api.defaults.headers.common[
-      //   "Authorization"
-      // ] = `Bearer ${window.localStorage.getItem("token_jwt_eday")}`;
-
+      api.defaults.headers.common[
+        "Authorization"
+      ] = `Basic ${window.localStorage.getItem("token_jwt_eday")}`;
+      // Bearer
       dispatch(getUser());
     }
   }, [dispatch]);

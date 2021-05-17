@@ -16,7 +16,19 @@ export const getProductApi = async (id) => {
 };
 
 export const createProductApi = async (request) => {
-  return await api.post(createProductURL, request);
+  return await api.post(
+    createProductURL,
+    {
+      name: "Test upload ko imag ",
+      amount: "100",
+      size: "29",
+      price_buy: 28000,
+      price_sell: 30000,
+      catId: 1,
+      inputDay: "",
+      image: "",
+    } || request
+  );
 };
 
 export const updateProductApi = async (request) => {

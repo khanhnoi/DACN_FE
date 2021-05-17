@@ -12,6 +12,7 @@ import {
   Rate,
   Upload,
   Modal,
+  Image,
 } from "antd";
 import UploadButton from "../../components/common/UploadButton";
 import { DeleteOutlined, EyeOutlined, PlusOutlined } from "@ant-design/icons";
@@ -35,6 +36,8 @@ import {
   UPDATE_PRODUCT_SUCCESS,
   UPDATE_PRODUCT_FAILD,
 } from "../../contanst";
+import FileBase from "react-file-base64";
+import Loading from "../../components/Loading";
 
 const { Option } = Select;
 const { TextArea } = Input;
@@ -45,8 +48,9 @@ const ProductDetail = (props) => {
   const categorys = useSelector((state) => state.products?.categorys);
 
   const [product, setProduct] = useState(null);
-  const [statusProduct, setStatusProduct] = useState([]);
+  // const [imageBase64, setImageBase64] = useState(null);
 
+  const [statusProduct, setStatusProduct] = useState([]);
   const [previewVisible, setPreviewVisible] = useState(false);
   const [previewImage, setPreviewImage] = useState("");
   const [previewTitle, setPreviewTitle] = useState("");
@@ -93,7 +97,7 @@ const ProductDetail = (props) => {
 
   const handleCancel = () => setPreviewVisible(false);
   const handlePreview = async (file) => {
-    console.log(file);
+    console.log({ file });
     if (!file.url && !file.preview) {
       file.preview = await getBase64(file.originFileObj);
     }
@@ -112,6 +116,8 @@ const ProductDetail = (props) => {
   };
 
   const onGalleryFileRemove = (file) => {
+    // console.log({ file });
+    if (file.status === NO_DATA) return;
     const { confirm } = Modal;
     return new Promise((resolve, reject) => {
       confirm({
@@ -119,6 +125,7 @@ const ProductDetail = (props) => {
         onOk: () => {
           resolve(true);
           // <!---- onRemoveFunctionality here ---->
+          setProduct({ ...product, image: "" });
         },
         onCancel: () => {
           reject(true);
@@ -180,7 +187,15 @@ const ProductDetail = (props) => {
     });
   }
 
+  const onDoneImageBase64 = ({ base64 }) =>
+    setProduct({
+      ...product,
+      image: base64,
+    });
+
   const handleSaveProduct = (resquest) => {
+    console.log({ resquest });
+
     updateProductApi(resquest)
       .then((res) => res.data)
       .then((res) => {
@@ -204,15 +219,8 @@ const ProductDetail = (props) => {
   const onFinish = (values) => {
     console.log("onFinish");
     console.log({ values });
-    const {
-      name,
-      amount,
-      size,
-      price_buy,
-      price_sell,
-      catId,
-      inputDay,
-    } = values;
+    const { name, amount, size, price_buy, price_sell, catId, inputDay } =
+      values;
     const resquest = {
       id: id,
       name,
@@ -221,7 +229,8 @@ const ProductDetail = (props) => {
       price_buy,
       price_sell,
       catId,
-      inputDay,
+      inputDay: inputDay || "",
+      image: product.image,
     };
     handleSaveProduct(resquest);
   };
@@ -233,16 +242,20 @@ const ProductDetail = (props) => {
   useEffect(() => {
     // fetchFakeAPI();
     async function fetch() {
-      await dispatch(fetchCategorysProduct());
+      console.log({ categorys });
+      if (!categorys) {
+        await dispatch(fetchCategorysProduct());
+      }
       // await dispatch(fetchDetailProduct(id));
-      // await getListCategoryApi().then((res) => console.log({ res }));
-      await getProductApi(id).then((res) => setProduct(res.data.data));
+      await getProductApi(id).then((res) => {
+        setProduct(res.data.data);
+      });
     }
     fetch();
   }, [dispatch, id]);
 
   useEffect(() => {}, [categorys]);
-  console.log({ product });
+
   if (product)
     return (
       <>
@@ -257,9 +270,10 @@ const ProductDetail = (props) => {
                 // onFinish={handleSubmit}
                 initialValues={{
                   name: product?.name || NO_DATA,
-                  description: product?.description || NO_DATA,
+                  // description: product?.description || NO_DATA,
                   image: product?.image,
-                  media: product?.media,
+                  amount: product?.amount,
+                  // media: product?.media,
                   // price:
                   //   product?.price ||
                   //   product?.price_sell ||
@@ -267,9 +281,9 @@ const ProductDetail = (props) => {
                   //   NO_DATA_NUMBER,
                   price_buy: product?.price_buy || NO_DATA_NUMBER,
                   price_sell: product?.price_sell || NO_DATA_NUMBER,
-                  rated: product?.rated || NO_DATA_NUMBER,
+                  // rated: product?.rated || NO_DATA_NUMBER,
                   size: product?.size || NO_DATA_NUMBER,
-                  status: product?.status || NO_DATA,
+                  // status: product?.status || NO_DATA,
                   catId: product?.catId || NO_DATA_NUMBER,
                   number: product?.number || NO_DATA_NUMBER,
                 }}
@@ -281,9 +295,9 @@ const ProductDetail = (props) => {
                   <Input placeholder="Nhập tên" />
                 </Form.Item>
 
-                <Form.Item label="Description" name="description">
+                {/* <Form.Item label="Description" name="description">
                   <TextArea rows={4} placeholder="Nhập địa chỉ" />
-                </Form.Item>
+                </Form.Item> */}
 
                 {/* <Form.Item label="Price" name="price">
                   <Input type="number" placeholder="Nhập giá" />
@@ -301,7 +315,7 @@ const ProductDetail = (props) => {
                   <Input type="number" placeholder="Nhập size" />
                 </Form.Item>
 
-                <Form.Item label="Number" name="number">
+                <Form.Item label="Amount" name="amount">
                   <Input
                     style={{ width: "150px" }}
                     type="number"
@@ -309,12 +323,12 @@ const ProductDetail = (props) => {
                   />
                 </Form.Item>
 
-                <Form.Item label="Rated" name="rated">
+                {/* <Form.Item label="Rated" name="rated">
                   <Rate tooltips={desc} />
-                  {/* <Rate value={0} disabled /> */}
-                </Form.Item>
+                  <Rate value={0} disabled />
+                </Form.Item> */}
 
-                <Form.Item label="Status" name="status">
+                {/* <Form.Item label="Status" name="status">
                   <Input.Group compact>
                     <Select
                       defaultValue={product?.status}
@@ -327,7 +341,7 @@ const ProductDetail = (props) => {
                       ))}
                     </Select>
                   </Input.Group>
-                </Form.Item>
+                </Form.Item> */}
 
                 <Form.Item label="Category" name="catId">
                   <Input.Group compact>
@@ -349,20 +363,38 @@ const ProductDetail = (props) => {
                 </Form.Item>
 
                 <Upload
-                  action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+                  // action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
                   listType={"picture-card" || "picture" || "text"}
-                  fileList={product?.media || [] || fileList}
+                  fileList={[
+                    {
+                      uid: product.id,
+                      name: product.image != "" ? "Image" : NO_DATA,
+                      status: product.image != "" ? "done" : NO_DATA,
+                      url: product.image,
+                    },
+                  ]}
                   onPreview={handlePreview}
-                  onChange={handleChange}
+                  // onChange={handleChange}
                   onRemove={onGalleryFileRemove}
                 >
-                  {fileList.length >= 8 ? null : (
+                  {/* {[{ name: "image.png" }].length >= 0 ? null : (
                     <div>
                       <PlusOutlined />
                       <div style={{ marginTop: 8 }}>Upload</div>
                     </div>
-                  )}
+                  )} */}
                 </Upload>
+
+                {/* <Image
+                  width={200}
+                  src="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
+                /> */}
+
+                <FileBase
+                  type="file"
+                  multiple={false}
+                  onDone={onDoneImageBase64}
+                ></FileBase>
 
                 <Form.Item>
                   <div
@@ -412,7 +444,7 @@ const ProductDetail = (props) => {
         </div>
       </>
     );
-  return null;
+  return <Loading />;
 };
 
 export default ProductDetail;
