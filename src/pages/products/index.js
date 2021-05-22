@@ -14,19 +14,26 @@ import {
   ExclamationCircleOutlined,
 } from "@ant-design/icons";
 import Loading from "../../components/Loading";
-import { NO_DATA, NO_DATA_NUMBER, desc } from "../../contanst";
+import {
+  NO_DATA,
+  NO_DATA_NUMBER,
+  desc,
+  DELETE_PRODUCT_SUCCESS,
+} from "../../contanst";
 import { useHistory } from "react-router";
 import { fetchAllProduct } from "../../actions/productAction";
-import { getAllProductApi } from "../../apis/productApi";
+import { getAllProductApi, deleteProductApi } from "../../apis/productApi";
 
 import imageNotFound from "../../assets/images/image-not-found.jpg";
 
 const Products = (props) => {
   // const [productsFake, setProductsFake] = useState(null);
-  // const [products, setProducts] = useState(null);
-  let products = useSelector((state) =>
-    state.products?.allProduct ? Object.values(state.products.allProduct) : null
-  );
+  const [products, setProducts] = useState(null);
+  const [oldProducts, setOldProducts] = useState(null);
+  const [countDelete, setCounDelete] = useState(0);
+  // let products = useSelector((state) =>
+  //   state.products?.allProduct ? Object.values(state.products.allProduct) : null
+  // );
   const dispatch = useDispatch();
   const history = useHistory();
 
@@ -102,7 +109,7 @@ const Products = (props) => {
     //   ),
     // },
     {
-      title: "Chức Năng",
+      title: "",
       dataIndex: "func",
       key: "func",
       render: (text, record) => (
@@ -119,7 +126,9 @@ const Products = (props) => {
             ></Button>
             <Button
               danger
-              onClick={() => handleDeleteProduct(record?.name)}
+              onClick={() =>
+                handleDeleteProduct(record?.id, record?.name, record?.stt)
+              }
               icon={<DeleteOutlined />}
             ></Button>
           </span>
@@ -133,39 +142,48 @@ const Products = (props) => {
     setProductsFake(resProductsFake);
   }
 
-  useEffect(() => {
-    console.log({ products });
-    if (products === null) dispatch(fetchAllProduct());
-
-    // if (!products) {
-    //   fetchFakeAPI();
-    // }
-
-    // getAllProductApi().then((res) => {
-    //   console.log(res?.data?.data);
-    //   setProducts(res?.data?.data);
-    // });
-  }, [dispatch]);
-
-  const onSearchProduct = (value) => {
-    console.log("Xu Ly Tim Kiem");
-    console.log(value);
-  };
-  const handleDeleteProduct = (name) => {
+  const handleDeleteProduct = (id, name, stt) => {
     Modal.confirm({
-      title: "Cảnh báo",
+      title: "Warning",
       icon: <ExclamationCircleOutlined />,
-      content: `Xoá sản phẩm ${name}. Khi đã xoá sẽ không thể hoàn tác ...
+      content: `Delete product ${name}. Once deleted, it cannot be completed ...
       `,
       okText: "Xoá",
-      cancelText: "Huỷ Bỏ",
+      cancelText: "Cancel",
       onOk: () => {
         console.log("Xu Ly Xoa");
         // Display
-        notification["success"]({
-          message: "Xoá thành công",
-          duration: 3,
-        });
+        deleteProductApi(id)
+          .then((res) => res.data)
+          .then((res) => {
+            // if (res.data) {
+
+            console.log({ res });
+            setCounDelete(countDelete + 1);
+            //index = stt - 1
+            // setProducts(products.splice(stt - 1, 1));
+
+            // Display
+            notification["success"]({
+              message: DELETE_PRODUCT_SUCCESS,
+              duration: 3,
+            });
+
+            // } else {
+            //   notification["error"]({
+            //     message: DELETE_PRODUCT_FAILD,
+            //     duration: 3,
+            //   });
+            // }
+          })
+          .catch((error) => {
+            // Display
+            console.log(error);
+            notification["error"]({
+              message: error.message,
+              duration: 3,
+            });
+          });
       },
     });
   };
@@ -173,21 +191,68 @@ const Products = (props) => {
   const handleChangeRated = (value) => {
     console.log("Change Rated " + value);
   };
+
+  const onSearchProduct = (value) => {
+    console.log("Xu Ly Tim Kiem");
+    console.log(value);
+
+    if (value == "") {
+      setProducts(oldproducts);
+      return;
+    }
+    value = value.toLowerCase();
+    let check = false;
+
+    let data = oldProducts.filter((item) => {
+      check = false;
+      check = item["name"].toLowerCase().includes(value);
+      // check = check ? check : item["position"].toLowerCase().includes(value);
+      // check = check ? check : item["office"].toLowerCase().includes(value);
+      check = check ? check : String(item["amount"]).includes(value);
+      check = check ? check : String(item["size"]).includes(value);
+      check = check ? check : String(item["price_buy"]).includes(value);
+      check = check ? check : String(item["price_sell"]).includes(value);
+      // check = check ? check : item["startDate"].toLowerCase().includes(value);
+      // console.log(check);
+      if (check) return item;
+    });
+
+    console.log({ data });
+    setProducts(data);
+  };
+
+  useEffect(() => {
+    // console.log({ products });
+    // if (products === null) dispatch(fetchAllProduct());
+
+    // if (!products) {
+    //   fetchFakeAPI();
+    // }
+
+    getAllProductApi().then((res) => {
+      console.log(res?.data?.data);
+      setProducts(res?.data?.data);
+      setOldProducts(res?.data?.data);
+    });
+  }, [dispatch, countDelete]);
+
+  useEffect(() => {}, [products]);
+
   // if (products)
   return (
     <div style={{ padding: "20px", minHeight: "calc(100vh - 70px)" }}>
       <Row style={{ marginBottom: "10px" }}>
         <Col span={24}>
-          <h5>Quản Lý Sản Phẩm</h5>
+          <h5>Product Management</h5>
         </Col>
         <Col span={12}>
           <Button onClick={() => history.push("/products/add")} type="primary">
-            Thêm Sản Phẩm
+            Create More Product
           </Button>
         </Col>
         <Col span={12}>
           <Search
-            placeholder="Tìm kiếm sản phẩm"
+            placeholder="Search Products"
             onSearch={onSearchProduct}
             enterButton
           />

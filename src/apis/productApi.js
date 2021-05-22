@@ -5,6 +5,7 @@ import {
   createProductURL,
   getDetailProductURL,
   getListCategoryURL,
+  deteteProductURL,
 } from "./urlsApi";
 
 export const getAllProductApi = async () => {
@@ -13,6 +14,10 @@ export const getAllProductApi = async () => {
 
 export const getProductApi = async (id) => {
   return await api.get(getDetailProductURL(id));
+};
+
+export const deleteProductApi = async (id) => {
+  return await api.delete(deteteProductURL(id));
 };
 
 export const createProductApi = async (request) => {

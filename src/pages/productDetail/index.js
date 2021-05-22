@@ -35,6 +35,8 @@ import {
   desc,
   UPDATE_PRODUCT_SUCCESS,
   UPDATE_PRODUCT_FAILD,
+  WARNING_INPUT,
+  WARNING_DELE_IMAGE,
 } from "../../contanst";
 import FileBase from "react-file-base64";
 import Loading from "../../components/Loading";
@@ -121,7 +123,7 @@ const ProductDetail = (props) => {
     const { confirm } = Modal;
     return new Promise((resolve, reject) => {
       confirm({
-        title: "Bạn muốn xoá ảnh này ?",
+        title: WARNING_DELE_IMAGE,
         onOk: () => {
           resolve(true);
           // <!---- onRemoveFunctionality here ---->
@@ -196,6 +198,21 @@ const ProductDetail = (props) => {
   const handleSaveProduct = (resquest) => {
     console.log({ resquest });
 
+    if (
+      resquest.name == "" ||
+      resquest.price_buy == "" ||
+      resquest.price_sell == "" ||
+      resquest.amount == "" ||
+      resquest.size == "" ||
+      resquest.catId == ("" || 0)
+    ) {
+      notification["warning"]({
+        message: WARNING_INPUT,
+        duration: 3,
+      });
+      return;
+    }
+    // return;
     updateProductApi(resquest)
       .then((res) => res.data)
       .then((res) => {
@@ -263,7 +280,7 @@ const ProductDetail = (props) => {
         <div style={{ padding: "20px", minHeight: "calc(100vh - 70px)" }}>
           <Row>
             <Col span="24">
-              <h1>Sản phẩm ID: {product?.id || id}</h1>
+              <h1>Product ID: {product?.id || id}</h1>
             </Col>
             <Col span={17}>
               <Form
@@ -293,7 +310,7 @@ const ProductDetail = (props) => {
                 {...{ labelCol: { span: 4 }, wrapperCol: { span: 20 } }}
               >
                 <Form.Item label="Name" name="name">
-                  <Input placeholder="Nhập tên" />
+                  <Input placeholder="" />
                 </Form.Item>
 
                 {/* <Form.Item label="Description" name="description">
@@ -305,22 +322,22 @@ const ProductDetail = (props) => {
                 </Form.Item> */}
 
                 <Form.Item label="Price Buy" name="price_buy">
-                  <Input type="number" placeholder="Nhập giá mua" />
+                  <Input type="number" placeholder="" />
                 </Form.Item>
 
                 <Form.Item label="Price Sell" name="price_sell">
-                  <Input type="number" placeholder="Nhập giá bán" />
+                  <Input type="number" placeholder="" />
                 </Form.Item>
 
                 <Form.Item label="Size" name="size">
-                  <Input type="number" placeholder="Nhập size" />
+                  <Input type="number" placeholder="" />
                 </Form.Item>
 
                 <Form.Item label="Amount" name="amount">
                   <Input
                     style={{ width: "150px" }}
                     type="number"
-                    placeholder="Nhập số số lượng"
+                    placeholder=""
                   />
                 </Form.Item>
 
@@ -345,22 +362,25 @@ const ProductDetail = (props) => {
                 </Form.Item> */}
 
                 <Form.Item label="Category" name="catId">
-                  <Input.Group compact>
-                    <Select
-                      defaultValue={
-                        categorys?.find(
-                          (category) => category.id === product?.catId
-                        )?.name
-                      }
-                      style={{ width: "150px" }}
-                    >
-                      {categorys?.map((category, index) => (
-                        <Option key={category.id} value={category.name}>
-                          {category.name}
-                        </Option>
-                      ))}
-                    </Select>
-                  </Input.Group>
+                  {/* <Input.Group compact> */}
+                  <Select
+                    defaultValue={
+                      categorys?.find(
+                        (category) => category.id === product?.catId
+                      )?.id
+                    }
+                    style={{ width: "150px" }}
+                  >
+                    {categorys?.map((category, index) => (
+                      <Option key={category.id} value={category.id}>
+                        {category.name}
+                      </Option>
+                    ))}
+                    {/* <Option value={1}>x1</Option>
+                    <Option value={2}>x2</Option>
+                    <Option value={3}>x3</Option> */}
+                  </Select>
+                  {/* </Input.Group> */}
                 </Form.Item>
 
                 <Upload
@@ -413,14 +433,14 @@ const ProductDetail = (props) => {
                         // onClick={handleSaveProduct}
                         htmlType="submit"
                       >
-                        Lưu
+                        Save
                       </Button>
                       <Button
                         // key="2"
                         className="btn-default"
                         onClick={() => props.history.push("/products")}
                       >
-                        Trở về
+                        Back
                       </Button>
                     </Space>
                   </div>

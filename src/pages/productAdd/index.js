@@ -35,6 +35,8 @@ import {
   desc,
   CREATE_PRODUCT_SUCCESS,
   CREATE_PRODUCT_FAILD,
+  WARNING_INPUT,
+  WARNING_DELE_IMAGE,
 } from "../../contanst";
 import FileBase from "react-file-base64";
 import Loading from "../../components/Loading";
@@ -122,11 +124,11 @@ const ProductAdd = (props) => {
     const { confirm } = Modal;
     return new Promise((resolve, reject) => {
       confirm({
-        title: "Bạn muốn xoá ảnh này ?",
+        title: WARNING_DELE_IMAGE,
         onOk: () => {
           resolve(true);
           // <!---- onRemoveFunctionality here ---->
-          setProduct({ ...product, image: "" });
+          setImageBase64("");
         },
         onCancel: () => {
           reject(true);
@@ -148,6 +150,20 @@ const ProductAdd = (props) => {
 
   const handleCreateProduct = (resquest) => {
     console.log({ resquest });
+    if (
+      resquest.name == "" ||
+      resquest.amount == "" ||
+      resquest.catId == ("" || 0) ||
+      resquest.price_buy == "" ||
+      resquest.price_sell == "" ||
+      resquest.size == ""
+    ) {
+      notification["warning"]({
+        message: WARNING_INPUT,
+        duration: 3,
+      });
+      return;
+    }
     createProductApi(resquest)
       .then((res) => res.data)
       .then((res) => {
@@ -221,7 +237,7 @@ const ProductAdd = (props) => {
       <div style={{ padding: "20px", minHeight: "calc(100vh - 70px)" }}>
         <Row>
           <Col span="24">
-            <h1>Thêm Sản phẩm</h1>
+            <h1>Add Product</h1>
           </Col>
           <Col span={17}>
             <Form
@@ -250,8 +266,12 @@ const ProductAdd = (props) => {
               onFinishFailed={onFinishFailed}
               {...{ labelCol: { span: 4 }, wrapperCol: { span: 20 } }}
             >
-              <Form.Item label="Name" name="name">
-                <Input placeholder="Nhập tên" />
+              <Form.Item
+                label="Name"
+                name="name"
+                // rules={[{ required: true, message: "Please input Name" }]}
+              >
+                <Input placeholder={" " || "Nhập tên"} />
               </Form.Item>
 
               {/* <Form.Item label="Description" name="description">
@@ -262,23 +282,39 @@ const ProductAdd = (props) => {
                   <Input type="number" placeholder="Nhập giá" />
                 </Form.Item> */}
 
-              <Form.Item label="Price Buy" name="price_buy">
-                <Input type="number" placeholder="Nhập giá mua" />
+              <Form.Item
+                label="Price Buy"
+                name="price_buy"
+                // rules={[{ required: true, message: "Please input Price Buy" }]}
+              >
+                <Input type="number" placeholder={" " || "Nhập giá mua"} />
               </Form.Item>
 
-              <Form.Item label="Price Sell" name="price_sell">
-                <Input type="number" placeholder="Nhập giá bán" />
+              <Form.Item
+                label="Price Sell"
+                name="price_sell"
+                // rules={[{ required: true, message: "Please input Price Sell" }]}
+              >
+                <Input type="number" placeholder={" " || "Nhập giá bán"} />
               </Form.Item>
 
-              <Form.Item label="Size" name="size">
-                <Input type="number" placeholder="Nhập size" />
+              <Form.Item
+                label="Size"
+                name="size"
+                // rules={[{ required: true, message: "Please input Size" }]}
+              >
+                <Input type="number" placeholder={" " || "Nhập size"} />
               </Form.Item>
 
-              <Form.Item label="Amount" name="amount">
+              <Form.Item
+                label="Amount"
+                name="amount"
+                // rules={[{ required: true, message: "Please input Amount" }]}
+              >
                 <Input
                   style={{ width: "150px" }}
                   type="number"
-                  placeholder="Nhập số số lượng"
+                  placeholder={" " || "Nhập số số lượng"}
                 />
               </Form.Item>
 
@@ -302,23 +338,27 @@ const ProductAdd = (props) => {
                   </Input.Group>
                 </Form.Item> */}
 
-              <Form.Item label="Category" name="catId">
-                <Input.Group compact>
-                  <Select
-                    // defaultValue={
-                    //   categorys?.find(
-                    //     (category) => category.id === product?.catId
-                    //   )?.name
-                    // }
-                    style={{ width: "150px" }}
-                  >
-                    {categorys?.map((category, index) => (
-                      <Option key={category.id} value={category.name}>
-                        {category.name}
-                      </Option>
-                    ))}
-                  </Select>
-                </Input.Group>
+              <Form.Item
+                label="Category"
+                name="catId"
+                // rules={[{ required: true, message: "Please input Name" }]}
+              >
+                {/* <Input.Group compact> */}
+                <Select
+                  // defaultValue={
+                  //   categorys?.find(
+                  //     (category) => category.id === product?.catId
+                  //   )?.name
+                  // }
+                  style={{ width: "150px" }}
+                >
+                  {categorys?.map((category, index) => (
+                    <Option key={category.id} value={category.id}>
+                      {category.name}
+                    </Option>
+                  ))}
+                </Select>
+                {/* </Input.Group> */}
               </Form.Item>
 
               <Upload
@@ -371,14 +411,14 @@ const ProductAdd = (props) => {
                       // onClick={handleSaveProduct}
                       htmlType="submit"
                     >
-                      Thêm
+                      Add
                     </Button>
                     <Button
                       // key="2"
                       className="btn-default"
                       onClick={() => props.history.push("/products")}
                     >
-                      Trở về
+                      Back
                     </Button>
                   </Space>
                 </div>

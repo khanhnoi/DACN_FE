@@ -22,12 +22,12 @@ const Navbar = (props) => {
   const contentMenus = [
     {
       Icon: <UserOutlined style={{ marginRight: "10px" }} />,
-      text: "Quản lý Người Dùng",
+      text: "Users" || "Quản lý Người Dùng",
       link: "/users",
     },
     {
       Icon: <ShoppingCartOutlined />,
-      text: "Quản lý Sản Phẩm",
+      text: "Products" || "Quản lý Sản Phẩm",
       link: "/products",
     },
     {
