@@ -1,5 +1,12 @@
 ## DACN HTTT
 
+Lưu ý: Nếu gặp lỗi CORS error khi call API
+
+```
+cmd gõ >"C:\Program Files\Google\Chrome\Application\chrome.exe" --disable-web-security --disable-gpu --user-data-dir=~/chromeTemp
+
+```
+
 Tiến trình Làm DATN
 
 - Srs, họp, dưng mockDesign ( trước tháng 3)

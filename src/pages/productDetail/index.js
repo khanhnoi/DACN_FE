@@ -205,6 +205,7 @@ const ProductDetail = (props) => {
             message: UPDATE_PRODUCT_SUCCESS,
             duration: 3,
           });
+          // history.push('/products');
         }
       })
       .catch((error) => {

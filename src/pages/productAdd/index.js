@@ -12,6 +12,7 @@ import {
   Rate,
   Upload,
   Modal,
+  Image,
 } from "antd";
 import UploadButton from "../../components/common/UploadButton";
 import { DeleteOutlined, EyeOutlined, PlusOutlined } from "@ant-design/icons";
@@ -23,7 +24,11 @@ import {
   fetchDetailProduct,
   fetchCategorysProduct,
 } from "../../actions/productAction";
-import { createProductApi, getProductApi } from "../../apis/productApi";
+import {
+  updateProductApi,
+  createProductApi,
+  getListCategoryApi,
+} from "../../apis/productApi";
 import {
   NO_DATA,
   NO_DATA_NUMBER,
@@ -31,6 +36,8 @@ import {
   CREATE_PRODUCT_SUCCESS,
   CREATE_PRODUCT_FAILD,
 } from "../../contanst";
+import FileBase from "react-file-base64";
+import Loading from "../../components/Loading";
 import { useHistory } from "react-router";
 
 const { Option } = Select;
@@ -40,11 +47,12 @@ const uploadButton = UploadButton;
 const ProductAdd = (props) => {
   // const product = useSelector((state) => state.products?.detailProduct);
   const categorys = useSelector((state) => state.products?.categorys);
+
+  const [imageBase64, setImageBase64] = useState("");
+  // const [imageBase64, setImageBase64] = useState(null);
   const history = useHistory();
 
-  const [product, setProduct] = useState(null);
   const [statusProduct, setStatusProduct] = useState([]);
-
   const [previewVisible, setPreviewVisible] = useState(false);
   const [previewImage, setPreviewImage] = useState("");
   const [previewTitle, setPreviewTitle] = useState("");
@@ -87,11 +95,10 @@ const ProductAdd = (props) => {
     // },
   ]);
   const dispatch = useDispatch();
-  const id = props.match.params.id;
 
   const handleCancel = () => setPreviewVisible(false);
   const handlePreview = async (file) => {
-    console.log(file);
+    console.log({ file });
     if (!file.url && !file.preview) {
       file.preview = await getBase64(file.originFileObj);
     }
@@ -110,6 +117,8 @@ const ProductAdd = (props) => {
   };
 
   const onGalleryFileRemove = (file) => {
+    // console.log({ file });
+    if (file.status === NO_DATA) return;
     const { confirm } = Modal;
     return new Promise((resolve, reject) => {
       confirm({
@@ -117,6 +126,7 @@ const ProductAdd = (props) => {
         onOk: () => {
           resolve(true);
           // <!---- onRemoveFunctionality here ---->
+          setProduct({ ...product, image: "" });
         },
         onCancel: () => {
           reject(true);
@@ -124,38 +134,6 @@ const ProductAdd = (props) => {
       });
     });
   };
-
-  // const  onGalleryFileRemove2 = (file)=>{
-  //   return new Promise((resolve, reject) => {
-  //    confirm({
-  //      title: 'are you sure to remove this file?',
-  //        onOk: () => {
-  //          resolve(true)
-  //        },
-  //    })
-  //      const index = this.state.galleryFile.indexOf(file);
-  //      const deletedGalleryFiles = this.state.deletedGalleryFiles;
-  //      deletedGalleryFiles.push(this.state.galleryFile[index].uid);
-  //      const newFileList = this.state.galleryFile.slice();
-  //          newFileList.splice(index, 1);
-  //              this.setState({
-  //                  galleryFile:newFileList,
-  //                  deletedGalleryFiles,
-  //                  previewVisible:false
-  //              })
-  //      false
-  //      })
-  //  }
-
-  const handleRemoveId = (id) => {
-    if (id === "-1") {
-      return null;
-    } else {
-      return <DeleteOutlined />;
-    }
-  };
-
-  //end upload img
 
   function getBase64(file) {
     return new Promise((resolve, reject) => {
@@ -165,6 +143,8 @@ const ProductAdd = (props) => {
       reader.onerror = (error) => reject(error);
     });
   }
+
+  const onDoneImageBase64 = ({ base64 }) => setImageBase64(base64);
 
   const handleCreateProduct = (resquest) => {
     console.log({ resquest });
@@ -177,14 +157,20 @@ const ProductAdd = (props) => {
             message: CREATE_PRODUCT_SUCCESS,
             duration: 3,
           });
-
+          console.log("OK");
           history.push("/products");
+        } else {
+          notification["error"]({
+            message: CREATE_PRODUCT_FAILD,
+            duration: 3,
+          });
         }
       })
       .catch((error) => {
         // Display
+        console.log(error);
         notification["error"]({
-          message: CREATE_PRODUCT_FAILD,
+          message: error.message,
           duration: 3,
         });
       });
@@ -193,15 +179,8 @@ const ProductAdd = (props) => {
   const onFinish = (values) => {
     console.log("onFinish");
     console.log({ values });
-    const {
-      name,
-      amount,
-      size,
-      price_buy,
-      price_sell,
-      catId,
-      inputDay,
-    } = values;
+    const { name, amount, size, price_buy, price_sell, catId, inputDay } =
+      values;
     const resquest = {
       name,
       amount,
@@ -209,7 +188,8 @@ const ProductAdd = (props) => {
       price_buy,
       price_sell,
       catId,
-      inputDay,
+      inputDay: inputDay || "",
+      image: imageBase64,
     };
     handleCreateProduct(resquest);
   };
@@ -221,43 +201,50 @@ const ProductAdd = (props) => {
   useEffect(() => {
     // fetchFakeAPI();
     async function fetch() {
-      await dispatch(fetchCategorysProduct());
+      // console.log({ categorys });
+      if (!categorys) {
+        await dispatch(fetchCategorysProduct());
+      }
       // await dispatch(fetchDetailProduct(id));
-      await getProductApi(id).then((res) => setProduct(res.data.data));
+      // await getProductApi(id).then((res) => {
+      //   setProduct(res.data.data);
+      // });
     }
     fetch();
-  }, [dispatch, id]);
+  }, [dispatch]);
 
   useEffect(() => {}, [categorys]);
-  console.log({ product });
+
+  // if (product)
   return (
     <>
       <div style={{ padding: "20px", minHeight: "calc(100vh - 70px)" }}>
         <Row>
           <Col span="24">
-            <h1>Thêm Sản Phẩm</h1>
+            <h1>Thêm Sản phẩm</h1>
           </Col>
           <Col span={17}>
             <Form
               className="register-form"
               // onFinish={handleSubmit}
               initialValues={{
-                name: product?.name,
-                description: product?.description,
-                image: product?.image,
-                media: product?.media,
+                name: "",
+                // description: product?.description || NO_DATA,
+                image: "",
+                amount: "",
+                // media: product?.media,
                 // price:
                 //   product?.price ||
                 //   product?.price_sell ||
                 //   product?.price_buy ||
                 //   NO_DATA_NUMBER,
-                price_buy: product?.price_buy,
-                price_sell: product?.price_sell,
-                rated: product?.rated,
-                size: product?.size,
-                status: product?.status,
-                catId: product?.catId,
-                number: product?.number,
+                price_buy: "",
+                price_sell: "",
+                // rated: product?.rated || NO_DATA_NUMBER,
+                size: "",
+                // status: product?.status || NO_DATA,
+                catId: "",
+                number: "",
               }}
               onFinish={onFinish}
               onFinishFailed={onFinishFailed}
@@ -267,9 +254,9 @@ const ProductAdd = (props) => {
                 <Input placeholder="Nhập tên" />
               </Form.Item>
 
-              <Form.Item label="Description" name="description">
-                <TextArea rows={4} placeholder="Nhập địa chỉ" />
-              </Form.Item>
+              {/* <Form.Item label="Description" name="description">
+                  <TextArea rows={4} placeholder="Nhập địa chỉ" />
+                </Form.Item> */}
 
               {/* <Form.Item label="Price" name="price">
                   <Input type="number" placeholder="Nhập giá" />
@@ -287,7 +274,7 @@ const ProductAdd = (props) => {
                 <Input type="number" placeholder="Nhập size" />
               </Form.Item>
 
-              <Form.Item label="Number" name="number">
+              <Form.Item label="Amount" name="amount">
                 <Input
                   style={{ width: "150px" }}
                   type="number"
@@ -295,34 +282,34 @@ const ProductAdd = (props) => {
                 />
               </Form.Item>
 
-              <Form.Item label="Rated" name="rated">
-                <Rate tooltips={desc} />
-                {/* <Rate value={0} disabled /> */}
-              </Form.Item>
+              {/* <Form.Item label="Rated" name="rated">
+                  <Rate tooltips={desc} />
+                  <Rate value={0} disabled />
+                </Form.Item> */}
 
-              <Form.Item label="Status" name="status">
-                <Input.Group compact>
-                  <Select
-                    defaultValue={product?.status}
-                    style={{ width: "150px" }}
-                  >
-                    {statusProduct.map((status, index) => (
-                      <Option key={index} value={status}>
-                        {status}
-                      </Option>
-                    ))}
-                  </Select>
-                </Input.Group>
-              </Form.Item>
+              {/* <Form.Item label="Status" name="status">
+                  <Input.Group compact>
+                    <Select
+                      defaultValue={product?.status}
+                      style={{ width: "150px" }}
+                    >
+                      {statusProduct.map((status, index) => (
+                        <Option key={index} value={status}>
+                          {status}
+                        </Option>
+                      ))}
+                    </Select>
+                  </Input.Group>
+                </Form.Item> */}
 
               <Form.Item label="Category" name="catId">
                 <Input.Group compact>
                   <Select
-                    defaultValue={
-                      categorys?.find(
-                        (category) => category.id === product?.catId
-                      )?.name
-                    }
+                    // defaultValue={
+                    //   categorys?.find(
+                    //     (category) => category.id === product?.catId
+                    //   )?.name
+                    // }
                     style={{ width: "150px" }}
                   >
                     {categorys?.map((category, index) => (
@@ -335,20 +322,38 @@ const ProductAdd = (props) => {
               </Form.Item>
 
               <Upload
-                action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+                // action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
                 listType={"picture-card" || "picture" || "text"}
-                fileList={product?.media || [] || fileList}
+                fileList={[
+                  {
+                    uid: "create",
+                    name: "Image",
+                    status: imageBase64 != "" ? "done" : NO_DATA,
+                    url: imageBase64,
+                  },
+                ]}
                 onPreview={handlePreview}
-                onChange={handleChange}
+                // onChange={handleChange}
                 onRemove={onGalleryFileRemove}
               >
-                {fileList.length >= 8 ? null : (
-                  <div>
-                    <PlusOutlined />
-                    <div style={{ marginTop: 8 }}>Upload</div>
-                  </div>
-                )}
+                {/* {[{ name: "image.png" }].length >= 0 ? null : (
+                    <div>
+                      <PlusOutlined />
+                      <div style={{ marginTop: 8 }}>Upload</div>
+                    </div>
+                  )} */}
               </Upload>
+
+              {/* <Image
+                  width={200}
+                  src="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
+                /> */}
+
+              <FileBase
+                type="file"
+                multiple={false}
+                onDone={onDoneImageBase64}
+              ></FileBase>
 
               <Form.Item>
                 <div
@@ -366,7 +371,7 @@ const ProductAdd = (props) => {
                       // onClick={handleSaveProduct}
                       htmlType="submit"
                     >
-                      Lưu
+                      Thêm
                     </Button>
                     <Button
                       // key="2"
@@ -398,7 +403,7 @@ const ProductAdd = (props) => {
       </div>
     </>
   );
-  return null;
+  return <Loading />;
 };
 
 export default ProductAdd;

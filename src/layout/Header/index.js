@@ -21,6 +21,7 @@ const HeaderLayout = (props) => {
       api.defaults.headers.common[
         "Authorization"
       ] = `Basic ${window.localStorage.getItem("token_jwt_eday")}`;
+
       // Bearer
       dispatch(getUser());
     }
