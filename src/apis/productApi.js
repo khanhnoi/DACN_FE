@@ -6,6 +6,7 @@ import {
   getDetailProductURL,
   getListCategoryURL,
   deteteProductURL,
+  getAllUsersURL,
 } from "./urlsApi";
 
 export const getAllProductApi = async () => {
@@ -30,4 +31,9 @@ export const updateProductApi = async (request) => {
 
 export const getListCategoryApi = async () => {
   return await api.get(getListCategoryURL);
+};
+
+// USERS
+export const getAllUsersApi = async () => {
+  return await api.get(getAllUsersURL);
 };

@@ -37,7 +37,7 @@ const Navbar = (props) => {
     },
     {
       Icon: <UsergroupDeleteOutlined />,
-      text: "Quản Lý Nhân Viên",
+      text: "Staffs" || "Quản Lý Nhân Viên",
       link: "/staffs",
     },
     {

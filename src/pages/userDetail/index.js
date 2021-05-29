@@ -15,6 +15,7 @@ import {
 } from "antd";
 import noUserImage from "../../assets/images/no-user-image.gif";
 import { getFakeDataUser, getFakeRolesUser } from "../../apis/fakeApis";
+import { getDetailUserApi } from "../../apis/userApi";
 
 const { Option } = Select;
 
@@ -52,10 +53,26 @@ const UserDetail = (props) => {
     console.log(resUserFake);
   };
 
+  // useEffect(() => {
+  //   // dispatch(fetchUser(id));
+  //   fetchFakeAPI();
+  // }, [dispatch, user]);
+
   useEffect(() => {
-    // dispatch(fetchUser(id));
-    fetchFakeAPI();
-  }, [dispatch, user]);
+    async function fetch() {
+      //console.log({ categorys });
+      // if (!categorys) {
+      //   await dispatch(fetchCategorysProduct());
+      // }
+      await getDetailUserApi(id).then((res) => {
+        console.log(res.data.data);
+        setUser(res.data.data);
+      });
+    }
+    fetch();
+  }, [dispatch, id]);
+
+  //useEffect(() => {}, [categorys]);
 
   if (user)
     return (
@@ -99,7 +116,8 @@ const UserDetail = (props) => {
                   name="email"
                   rules={[
                     {
-                      pattern: /^([A-Z|a-z|0-9](\.|_){0,1})+[A-Z|a-z|0-9]@([A-Z|a-z|0-9])+((\.){0,1}[A-Z|a-z|0-9]){2}\.[a-z]{2,3}$/gm,
+                      pattern:
+                        /^([A-Z|a-z|0-9](\.|_){0,1})+[A-Z|a-z|0-9]@([A-Z|a-z|0-9])+((\.){0,1}[A-Z|a-z|0-9]){2}\.[a-z]{2,3}$/gm,
                       message: "Email không hợp lệ",
                     },
                   ]}

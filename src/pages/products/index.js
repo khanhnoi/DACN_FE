@@ -159,9 +159,9 @@ const Products = (props) => {
             // if (res.data) {
 
             console.log({ res });
-            setCounDelete(countDelete + 1);
+
             //index = stt - 1
-            // setProducts(products.splice(stt - 1, 1));
+            setCounDelete(countDelete + 1);
 
             // Display
             notification["success"]({
@@ -197,7 +197,7 @@ const Products = (props) => {
     console.log(value);
 
     if (value == "") {
-      setProducts(oldproducts);
+      setProducts(oldProducts);
       return;
     }
     value = value.toLowerCase();

@@ -21,26 +21,26 @@ import {
   ExclamationCircleOutlined,
 } from "@ant-design/icons";
 import { useHistory } from "react-router";
+import { getAllUsersApi } from "../../apis/userApi";
+import Loading from "../../components/Loading";
+import {
+  NO_DATA,
+  NO_DATA_NUMBER,
+  desc,
+  DELETE_PRODUCT_SUCCESS,
+} from "../../contanst";
+import imageNotFound from "../../assets/images/image-not-found.jpg";
 
 const Users = (props) => {
-  const [usersFake, setUsersFake] = useState(null);
-  let users = useSelector((state) =>
-    state.users ? Object.values(state.users) : null
-  );
+  // const [usersFake, setUsersFake] = useState(null);
+  // let users = useSelector((state) =>
+  //   state.users ? Object.values(state.users) : null
+  // );
+  const [users, setUsers] = useState(null);
+  const [oldUsers, setOldUsers] = useState(null);
+  const [countDelete, setCounDelete] = useState(0);
   const dispatch = useDispatch();
   const history = useHistory();
-
-  useEffect(() => {
-    // dispatch(fetchUsers());
-    async function fetchFakeAPI() {
-      const resUsersFake = await getFakeDataUsers();
-      // const resUsers = await getDataUsers();
-      setUsersFake(resUsersFake);
-    }
-    if (!users) {
-      fetchFakeAPI();
-    }
-  }, [dispatch, usersFake]);
 
   const columns = [
     {
@@ -50,9 +50,11 @@ const Users = (props) => {
     },
     {
       title: "Avatar",
-      dataIndex: "avatar",
-      key: "avatar",
-      render: (src) => <img style={{ width: "40px" }} src={src} />,
+      dataIndex: "avt",
+      key: "avt",
+      render: (src) => (
+        <img style={{ width: "40px" }} src={src ? src : imageNotFound} />
+      ),
     },
     {
       title: "Email",
@@ -60,37 +62,40 @@ const Users = (props) => {
       key: "email",
     },
     {
-      title: "Login Name",
-      dataIndex: "loginName",
-      key: "loginName",
+      title: "User Name",
+      dataIndex: "username",
+      key: "username",
+      render: (src) => (src ? src : NO_DATA),
     },
     {
       title: "Phone",
       dataIndex: "phone",
       key: "phone",
+      render: (src) => (src ? src : NO_DATA),
     },
     {
       title: "Address",
-      dataIndex: "address",
-      key: "address",
+      dataIndex: "addr",
+      key: "addr",
+      render: (src) => (src ? src : NO_DATA),
     },
     {
       title: "Role",
       dataIndex: "role",
       key: "role",
     },
-    {
-      title: "Active",
-      dataIndex: "active",
-      key: "active",
-      render: (text, record) => (
-        <Checkbox
-          // checked={record?.active}
-          defaultChecked={record?.active}
-          // onChange={(e) => console.log(`checked = ${e.target.checked}`)}
-        ></Checkbox>
-      ),
-    },
+    // {
+    //   title: "Active",
+    //   dataIndex: "active",
+    //   key: "active",
+    //   render: (text, record) => (
+    //     <Checkbox
+    //       // checked={record?.active}
+    //       defaultChecked={record?.active}
+    //       // onChange={(e) => console.log(`checked = ${e.target.checked}`)}
+    //     ></Checkbox>
+    //   ),
+    // },
     {
       title: "Chức Năng",
       dataIndex: "func",
@@ -107,11 +112,11 @@ const Users = (props) => {
               }}
               icon={<EditOutlined />}
             ></Button>
-            <Button
+            {/* <Button
               danger
               onClick={() => handleDeleteUser(record?.loginName)}
               icon={<DeleteOutlined />}
-            ></Button>
+            ></Button> */}
           </span>
         </>
       ),
@@ -121,6 +126,30 @@ const Users = (props) => {
   const onSearchUser = (value) => {
     console.log("Xu Ly Tim Kiem");
     console.log(value);
+
+    if (value == "") {
+      setUsers(oldUsers);
+      return;
+    }
+    value = value.toLowerCase();
+    let check = false;
+
+    let data = oldUsers.filter((item) => {
+      check = false;
+      check = item["username"].toLowerCase().includes(value);
+      // check = check ? check : item["position"].toLowerCase().includes(value);
+      // check = check ? check : item["office"].toLowerCase().includes(value);
+      check = check ? check : String(item["email"]).includes(value);
+      check = check ? check : String(item["role"]).includes(value);
+      check = check ? check : String(item["addr"]).includes(value);
+      check = check ? check : String(item["phone"]).includes(value);
+      // check = check ? check : item["startDate"].toLowerCase().includes(value);
+      // console.log(check);
+      if (check) return item;
+    });
+
+    console.log({ data });
+    setUsers(data);
   };
   const handleDeleteUser = (name) => {
     Modal.confirm({
@@ -141,27 +170,56 @@ const Users = (props) => {
     });
   };
 
+  useEffect(() => {
+    // dispatch(fetchUsers());
+    // async function fetchFakeAPI() {
+    //   const resUsersFake = await getFakeDataUsers();
+    //   setUsersFake(resUsersFake);
+    // }
+    // if (!users) {
+    //   fetchFakeAPI();
+    // }
+
+    getAllUsersApi().then((res) => {
+      console.log(res?.data?.data);
+      setUsers(res?.data?.data);
+      setOldUsers(res?.data?.data);
+    });
+  }, [dispatch, countDelete]);
+
+  useEffect(() => {}, [users]);
+
   return (
     <div style={{ padding: "20px", minHeight: "calc(100vh - 70px)" }}>
       <Row style={{ marginBottom: "10px" }}>
         <Col span={12}>
-          <h5>Quản Lý Người Dùng (Fake)</h5>
+          <h5>User management</h5>
         </Col>
         <Col span={12}>
           <Search
-            placeholder="Tìm kiếm người dùng"
+            placeholder="Search Users"
             onSearch={onSearchUser}
+            //onChange={onSearchUser}
             enterButton
           />
         </Col>
       </Row>
       <Row>
         <Col span={24}>
-          <Table
-            columns={columns}
-            dataSource={users || usersFake || []}
-            pagination={users || usersFake?.length > 10}
-          />
+          {users ? (
+            <Table
+              columns={columns}
+              dataSource={
+                users?.map((user, index) => ({
+                  ...user,
+                  stt: index + 1,
+                })) || []
+              }
+              pagination={users.length > 10}
+            />
+          ) : (
+            <Loading />
+          )}
         </Col>
       </Row>
     </div>
