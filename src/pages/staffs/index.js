@@ -13,12 +13,7 @@ import {
 } from "@ant-design/icons";
 import { getAllStaffsApi } from "../../apis/staffApi";
 import Loading from "../../components/Loading";
-import {
-  NO_DATA,
-  NO_DATA_NUMBER,
-  desc,
-  DELETE_PRODUCT_SUCCESS,
-} from "../../contanst";
+import { NO_DATA } from "../../contanst";
 import imageNotFound from "../../assets/images/image-not-found.jpg";
 const { Search } = Input;
 

@@ -15,15 +15,25 @@ import {
 } from "antd";
 import noUserImage from "../../assets/images/no-user-image.gif";
 import { getFakeDataUser, getFakeRolesUser } from "../../apis/fakeApis";
-import { getDetailUserApi } from "../../apis/userApi";
+import { getDetailUserApi, updateUserApi } from "../../apis/userApi";
+import Loading from "../../components/Loading";
+import {
+  NO_DATA,
+  INVALID_EMAIL,
+  WARNING_INPUT,
+  UPDATE_USER_SUCCESS,
+  UPDATE_USER_FAILD,
+} from "../../contanst";
+import { useHistory } from "react-router";
 
 const { Option } = Select;
 
 const UserDetail = (props) => {
   const [user, setUser] = useState(null);
-  const [rolesUser, setRolesUser] = useState([]);
+  const [rolesUser, setRolesUser] = useState(["ROLE_CUSTOMER", "ROLE_STAFF"]);
   const dispatch = useDispatch();
   const id = props.match.params.id;
+  const history = useHistory();
 
   function handleChange(value) {
     console.log(`selected ${value}`);
@@ -53,6 +63,53 @@ const UserDetail = (props) => {
     console.log(resUserFake);
   };
 
+  const onFinish = (values) => {
+    console.log("onFinish");
+    console.log({ values });
+    const { role } = values;
+    const resquest = {
+      id: id,
+      role: role,
+    };
+    handleUpdateUser(resquest);
+  };
+
+  const onFinishFailed = (errorInfo) => {
+    console.log("Failed:", errorInfo);
+  };
+
+  const handleUpdateUser = (resquest) => {
+    console.log({ resquest });
+
+    if (resquest.role == "ROLE_CUSTOMER") {
+      notification["warning"]({
+        message: WARNING_INPUT,
+        duration: 3,
+      });
+      return;
+    }
+
+    updateUserApi(resquest)
+      .then((res) => res.data)
+      .then((res) => {
+        if (res.data) {
+          // Display
+          notification["success"]({
+            message: UPDATE_USER_SUCCESS,
+            duration: 3,
+          });
+          history.push("/staffs");
+        }
+      })
+      .catch((error) => {
+        // Display
+        notification["error"]({
+          message: UPDATE_USER_FAILD,
+          duration: 3,
+        });
+      });
+  };
+
   // useEffect(() => {
   //   // dispatch(fetchUser(id));
   //   fetchFakeAPI();
@@ -80,24 +137,26 @@ const UserDetail = (props) => {
         <div style={{ padding: "20px", minHeight: "calc(100vh - 70px)" }}>
           <Row>
             <Col span="24">
-              <h1>Chỉnh sửa người dùng {id}</h1>
+              <h1>User Id : {id}</h1>
             </Col>
             <Col span={17}>
               <Form
                 className="register-form"
                 // onFinish={handleSubmit}
                 initialValues={{
-                  name: user?.name,
-                  address: user?.address,
+                  name: user?.username,
+                  address: user?.addr,
                   email: user?.email,
                   phone: user?.phone,
                   role: user?.role,
                 }}
+                onFinish={onFinish}
+                onFinishFailed={onFinishFailed}
                 {...{ labelCol: { span: 4 }, wrapperCol: { span: 20 } }}
               >
                 <Form.Item label="Name" name="name">
                   <Input
-                    placeholder="Nhập tên"
+                    placeholder=""
                     disabled
                     // defaultValue={user?.name}
                   />
@@ -105,7 +164,7 @@ const UserDetail = (props) => {
 
                 <Form.Item label="Address" name="address">
                   <Input
-                    placeholder="Nhập địa chỉ"
+                    placeholder=""
                     disabled
                     // defaultValue={user?.adress}
                   />
@@ -118,12 +177,12 @@ const UserDetail = (props) => {
                     {
                       pattern:
                         /^([A-Z|a-z|0-9](\.|_){0,1})+[A-Z|a-z|0-9]@([A-Z|a-z|0-9])+((\.){0,1}[A-Z|a-z|0-9]){2}\.[a-z]{2,3}$/gm,
-                      message: "Email không hợp lệ",
+                      message: INVALID_EMAIL,
                     },
                   ]}
                 >
                   <Input
-                    placeholder="Nhập Email"
+                    placeholder=""
                     disabled
                     // defaultValue={user?.email}
                   />
@@ -147,19 +206,39 @@ const UserDetail = (props) => {
                 </Form.Item>
 
                 <Form.Item label="Role" name="role">
-                  <Input.Group compact name="role">
-                    <Select
-                      defaultValue={user?.role}
-                      style={{ width: "150px" }}
-                    >
-                      {rolesUser.map((role, index) => (
-                        <Option key={index} value={role}>
-                          {role}
-                        </Option>
-                      ))}
-                    </Select>
-                  </Input.Group>
+                  {/* <Input.Group compact name="role"> */}
+                  <Select defaultValue={user?.role} style={{ width: "150px" }}>
+                    {rolesUser.map((role, index) => (
+                      <Option key={index} value={role}>
+                        {role}
+                      </Option>
+                    ))}
+                  </Select>
+                  {/* </Input.Group> */}
                 </Form.Item>
+
+                <Col span="24">
+                  <div style={{ textAlign: "center" }}>
+                    <Space size={10}>
+                      <Button
+                        // key="1"
+                        className="btn-default"
+                        type="primary"
+                        //onClick={handleSaveUser}
+                        htmlType="submit"
+                      >
+                        Lưu
+                      </Button>
+                      <Button
+                        // key="2"
+                        className="btn-default"
+                        onClick={() => props.history.push("/users")}
+                      >
+                        Trở về
+                      </Button>
+                    </Space>
+                  </div>
+                </Col>
               </Form>
             </Col>
 
@@ -167,36 +246,15 @@ const UserDetail = (props) => {
               <div>
                 <img
                   style={{ borderRadius: "50%", width: 150, height: 150 }}
-                  src={user.avatar || noUserImage}
+                  src={user.avt || noUserImage}
                 />
-              </div>
-            </Col>
-            <Col span="24">
-              <div style={{ textAlign: "center" }}>
-                <Space size={10}>
-                  <Button
-                    // key="1"
-                    className="btn-default"
-                    type="primary"
-                    onClick={handleSaveUser}
-                  >
-                    Lưu
-                  </Button>
-                  <Button
-                    // key="2"
-                    className="btn-default"
-                    onClick={() => props.history.push("/users")}
-                  >
-                    Trở về
-                  </Button>
-                </Space>
               </div>
             </Col>
           </Row>
         </div>
       </>
     );
-  return null;
+  return <Loading />;
 };
 
 export default UserDetail;

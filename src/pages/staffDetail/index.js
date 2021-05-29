@@ -15,6 +15,9 @@ import {
 } from "antd";
 import noUserImage from "../../assets/images/no-user-image.gif";
 import { getFakeDataStaff, getFakeRolesStaff } from "../../apis/fakeApis";
+import { getDetailStaffApi } from "../../apis/staffApi";
+import Loading from "../../components/Loading";
+import { NO_DATA, INVALID_EMAIL, UPDATE_STAFF_SUCCESS } from "../../contanst";
 
 const { Option } = Select;
 
@@ -48,10 +51,28 @@ const StaffDetail = (props) => {
     console.log(resStaffFake);
   };
 
+  // useEffect(() => {
+  //   // dispatch(fetchUser(id));
+  //   fetchFakeAPI();
+  // }, [dispatch, staff]);
+
   useEffect(() => {
-    // dispatch(fetchUser(id));
-    fetchFakeAPI();
-  }, [dispatch, staff]);
+    // fetchFakeAPI();
+    async function fetch() {
+      // console.log({ categorys });
+      // if (!categorys) {
+      //   await dispatch(fetchCategorysProduct());
+      // }
+      // await dispatch(fetchDetailProduct(id));
+      await getDetailStaffApi(id).then((res) => {
+        setStaff(res.data.data);
+        console.log(res.data.data);
+      });
+    }
+    fetch();
+  }, [dispatch, id]);
+
+  //useEffect(() => {}, [categorys]);
 
   if (staff)
     return (
@@ -59,18 +80,18 @@ const StaffDetail = (props) => {
         <div style={{ padding: "20px", minHeight: "calc(100vh - 70px)" }}>
           <Row>
             <Col span="24">
-              <h1>Chỉnh sửa Nhân Viên {id}</h1>
+              <h1>Staff Id: {id}</h1>
             </Col>
             <Col span={17}>
               <Form
                 className="register-form"
                 // onFinish={handleSubmit}
                 initialValues={{
-                  name: staff?.name,
-                  address: staff?.address,
-                  email: staff?.email,
-                  phone: staff?.phone,
-                  team: staff?.team,
+                  name: staff?.user?.username,
+                  address: staff?.user?.addr,
+                  email: staff?.user?.email,
+                  phone: staff?.user?.phone,
+                  //team: staff?.user?.team,
                   experience: staff?.experience,
                 }}
                 {...{ labelCol: { span: 4 }, wrapperCol: { span: 20 } }}
@@ -96,8 +117,9 @@ const StaffDetail = (props) => {
                   name="email"
                   rules={[
                     {
-                      pattern: /^([A-Z|a-z|0-9](\.|_){0,1})+[A-Z|a-z|0-9]@([A-Z|a-z|0-9])+((\.){0,1}[A-Z|a-z|0-9]){2}\.[a-z]{2,3}$/gm,
-                      message: "Email không hợp lệ",
+                      pattern:
+                        /^([A-Z|a-z|0-9](\.|_){0,1})+[A-Z|a-z|0-9]@([A-Z|a-z|0-9])+((\.){0,1}[A-Z|a-z|0-9]){2}\.[a-z]{2,3}$/gm,
+                      message: INVALID_EMAIL,
                     },
                   ]}
                 >
@@ -119,17 +141,17 @@ const StaffDetail = (props) => {
                 >
                   <Input
                     type="number"
-                    placeholder="Nhập số điện thoại"
+                    placeholder=""
                     // disabled
                     // defaultValue={user?.phone}
                   />
                 </Form.Item>
 
-                <Form.Item label="Kinh nghiệm" name="experience">
-                  <Input type="text" placeholder="Nhập kinh nghiệm" />
+                <Form.Item label="Experience" name="experience">
+                  <Input type="text" placeholder="" />
                 </Form.Item>
 
-                <Form.Item label="Tổ Đội" name="team">
+                {/* <Form.Item label="Tổ Đội" name="team">
                   <Input.Group compact name="team">
                     <Select
                       defaultValue={staff?.team}
@@ -142,7 +164,7 @@ const StaffDetail = (props) => {
                       ))}
                     </Select>
                   </Input.Group>
-                </Form.Item>
+                </Form.Item> */}
               </Form>
             </Col>
 
@@ -150,7 +172,7 @@ const StaffDetail = (props) => {
               <div>
                 <img
                   style={{ borderRadius: "50%", width: 150, height: 150 }}
-                  src={staff.avatar || noUserImage}
+                  src={staff?.user?.avt || noUserImage}
                 />
               </div>
             </Col>
@@ -179,7 +201,7 @@ const StaffDetail = (props) => {
         </div>
       </>
     );
-  return null;
+  return <Loading />;
 };
 
 export default StaffDetail;

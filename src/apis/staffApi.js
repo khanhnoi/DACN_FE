@@ -1,14 +1,14 @@
 import api from "./index";
-import { getAllStaffsURL } from "./urlsApi";
+import { getDetailStaffURL, getAllStaffsURL } from "./urlsApi";
 
-// USERS
+// STAFF
 export const getAllStaffsApi = async () => {
   return await api.get(getAllStaffsURL);
 };
 
-// export const getProductApi = async (id) => {
-//   return await api.get(getDetailProductURL(id));
-// };
+export const getDetailStaffApi = async (id) => {
+  return await api.get(getDetailStaffURL(id));
+};
 
 // export const deleteProductApi = async (id) => {
 //   return await api.delete(deteteProductURL(id));

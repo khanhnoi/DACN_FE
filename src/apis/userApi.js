@@ -1,5 +1,5 @@
 import api from "./index";
-import { getAllUsersURL, getDetailUserURL } from "./urlsApi";
+import { getAllUsersURL, getDetailUserURL, updateUserURL } from "./urlsApi";
 
 // USERS
 export const getAllUsersApi = async () => {
@@ -18,9 +18,9 @@ export const getDetailUserApi = async (id) => {
 //   return await api.post(createProductURL, request);
 // };
 
-// export const updateProductApi = async (request) => {
-//   return await api.post(updateProductURL, request);
-// };
+export const updateUserApi = async (request) => {
+  return await api.post(updateUserURL, request);
+};
 
 // export const getListCategoryApi = async () => {
 //   return await api.get(getListCategoryURL);

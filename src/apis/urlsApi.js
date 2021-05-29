@@ -19,12 +19,12 @@ export const getAllUsersURL = "./eday/admin/user/getAllCustomer";
 // export const deteteProductURL = (id) => `./eday/admin/${id}/deleted`;
 export const getDetailUserURL = (id) => `./eday/admin/detailUser/${id}`;
 // export const createProductURL = "./eday/admin/product/create";
-// export const updateProductURL = "./eday/admin/product/update";
+export const updateUserURL = "./eday/admin/user/update";
 
-// User
+// Staff
 export const getAllStaffsURL = "./eday/listStaff";
 // export const deteteProductURL = (id) => `./eday/admin/${id}/deleted`;
-// export const getDetailProductURL = (id) => `./eday/product/${id}/detail`;
+export const getDetailStaffURL = (id) => `./eday/admin/detailStaff/${id}`;
 // export const createProductURL = "./eday/admin/product/create";
 // export const updateProductURL = "./eday/admin/product/update";
 
