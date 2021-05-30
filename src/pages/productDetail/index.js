@@ -203,8 +203,8 @@ const ProductDetail = (props) => {
       resquest.price_buy == "" ||
       resquest.price_sell == "" ||
       resquest.amount == "" ||
-      resquest.size == "" ||
-      resquest.catId == ("" || 0)
+      resquest.size == "" //||
+      // resquest.catId == ("" || 0)
     ) {
       notification["warning"]({
         message: WARNING_INPUT,

@@ -153,7 +153,7 @@ const ProductAdd = (props) => {
     if (
       resquest.name == "" ||
       resquest.amount == "" ||
-      resquest.catId == ("" || 0) ||
+      // resquest.catId == ("" || 0) ||
       resquest.price_buy == "" ||
       resquest.price_sell == "" ||
       resquest.size == ""

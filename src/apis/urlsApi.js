@@ -26,7 +26,7 @@ export const getAllStaffsURL = "./eday/listStaff";
 // export const deteteProductURL = (id) => `./eday/admin/${id}/deleted`;
 export const getDetailStaffURL = (id) => `./eday/admin/detailStaff/${id}`;
 // export const createProductURL = "./eday/admin/product/create";
-// export const updateProductURL = "./eday/admin/product/update";
+export const updateStaffURL = "./eday/admin/staff/update";
 
 // End Product
 // export const baseURL = "http://localhost:8080/";
