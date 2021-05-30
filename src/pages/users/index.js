@@ -21,13 +21,13 @@ import {
   ExclamationCircleOutlined,
 } from "@ant-design/icons";
 import { useHistory } from "react-router";
-import { getAllUsersApi } from "../../apis/userApi";
+import { getAllUsersApi, deleteUserApi } from "../../apis/userApi";
 import Loading from "../../components/Loading";
 import {
   NO_DATA,
   NO_DATA_NUMBER,
   desc,
-  DELETE_PRODUCT_SUCCESS,
+  DELETE_USER_SUCCESS,
 } from "../../contanst";
 import imageNotFound from "../../assets/images/image-not-found.jpg";
 
@@ -97,7 +97,7 @@ const Users = (props) => {
     //   ),
     // },
     {
-      title: "Chức Năng",
+      title: "",
       dataIndex: "func",
       key: "func",
       render: (text, record) => (
@@ -112,11 +112,13 @@ const Users = (props) => {
               }}
               icon={<EditOutlined />}
             ></Button>
-            {/* <Button
+            <Button
               danger
-              onClick={() => handleDeleteUser(record?.loginName)}
+              onClick={() =>
+                handleDeleteUser(record?.id, record?.name, record?.stt)
+              }
               icon={<DeleteOutlined />}
-            ></Button> */}
+            ></Button>
           </span>
         </>
       ),
@@ -151,21 +153,49 @@ const Users = (props) => {
     console.log({ data });
     setUsers(data);
   };
-  const handleDeleteUser = (name) => {
+  const handleDeleteUser = (id, name, stt) => {
     Modal.confirm({
-      title: "Cảnh báo",
+      title: "Warning",
       icon: <ExclamationCircleOutlined />,
-      content: `Xoá người dùng ${name}. Khi đã xoá sẽ không thể hoàn tác ...
+      content: `Delete user ${name}. Once deleted, it cannot be completed ...
       `,
-      okText: "Xoá",
-      cancelText: "Huỷ Bỏ",
+      okText: "Delete",
+      cancelText: "Cancel",
       onOk: () => {
         console.log("Xu Ly Xoa");
+        //return;
         // Display
-        notification["success"]({
-          message: "Xoá thành công",
-          duration: 3,
-        });
+        deleteUserApi({ id })
+          .then((res) => res.data)
+          .then((res) => {
+            // if (res.data) {
+
+            console.log({ res });
+
+            //index = stt - 1
+            setCounDelete(countDelete + 1);
+
+            // Display
+            notification["success"]({
+              message: DELETE_USER_SUCCESS,
+              duration: 3,
+            });
+
+            // } else {
+            //   notification["error"]({
+            //     message: DELETE_PRODUCT_FAILD,
+            //     duration: 3,
+            //   });
+            // }
+          })
+          .catch((error) => {
+            // Display
+            console.log(error);
+            notification["error"]({
+              message: error.message,
+              duration: 3,
+            });
+          });
       },
     });
   };

@@ -16,14 +16,14 @@ export const getListCategoryURL = "./eday/cat/list";
 
 // User
 export const getAllUsersURL = "./eday/admin/user/getAllCustomer";
-// export const deteteProductURL = (id) => `./eday/admin/${id}/deleted`;
+export const deteteUserURL = `./eday/admin/user/delete`;
 export const getDetailUserURL = (id) => `./eday/admin/detailUser/${id}`;
 // export const createProductURL = "./eday/admin/product/create";
 export const updateUserURL = "./eday/admin/user/update";
 
 // Staff
 export const getAllStaffsURL = "./eday/listStaff";
-// export const deteteProductURL = (id) => `./eday/admin/${id}/deleted`;
+export const deteteStaffURL = `./eday/admin/user/delete`;
 export const getDetailStaffURL = (id) => `./eday/admin/detailStaff/${id}`;
 // export const createProductURL = "./eday/admin/product/create";
 export const updateStaffURL = "./eday/admin/staff/update";

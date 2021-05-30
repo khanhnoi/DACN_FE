@@ -1,5 +1,10 @@
 import api from "./index";
-import { getDetailStaffURL, getAllStaffsURL, updateStaffURL } from "./urlsApi";
+import {
+  getDetailStaffURL,
+  getAllStaffsURL,
+  updateStaffURL,
+  deteteStaffURL,
+} from "./urlsApi";
 
 // STAFF
 export const getAllStaffsApi = async () => {
@@ -10,9 +15,9 @@ export const getDetailStaffApi = async (id) => {
   return await api.get(getDetailStaffURL(id));
 };
 
-// export const deleteProductApi = async (id) => {
-//   return await api.delete(deteteProductURL(id));
-// };
+export const deleteStaffApi = async (request) => {
+  return await api.post(deteteStaffURL, request);
+};
 
 // export const createProductApi = async (request) => {
 //   return await api.post(createProductURL, request);

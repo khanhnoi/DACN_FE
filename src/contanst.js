@@ -24,7 +24,7 @@ export const UPDATE_USER_SUCCESS =
   "User update successful" || "Cập nhật người dùng thành công";
 export const UPDATE_USER_FAILD =
   "User update failed" || "Cập nhật người dùng không thành công";
-
+export const DELETE_USER_SUCCESS = "User remove successful";
 //Staff
 export const DELETE_STAFF_SUCCESS = "Staff remove successful";
 export const UPDATE_STAFF_SUCCESS =

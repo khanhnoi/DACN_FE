@@ -148,7 +148,7 @@ const Products = (props) => {
       icon: <ExclamationCircleOutlined />,
       content: `Delete product ${name}. Once deleted, it cannot be completed ...
       `,
-      okText: "Xoá",
+      okText: "Delete",
       cancelText: "Cancel",
       onOk: () => {
         console.log("Xu Ly Xoa");
