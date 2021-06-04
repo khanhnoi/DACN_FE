@@ -13,6 +13,7 @@ import {
   AppstoreOutlined,
   HeartOutlined,
   UsergroupDeleteOutlined,
+  MoneyCollectOutlined,
 } from "@ant-design/icons";
 
 const { Header, Sider, Content } = Layout;
@@ -31,15 +32,21 @@ const Navbar = (props) => {
       link: "/products",
     },
     {
-      Icon: <AppstoreOutlined />,
-      text: "Quản Lý Kho",
-      link: "/store",
-    },
-    {
       Icon: <UsergroupDeleteOutlined />,
       text: "Staffs" || "Quản Lý Nhân Viên",
       link: "/staffs",
     },
+    {
+      Icon: <MoneyCollectOutlined />,
+      text: "Payroll",
+      link: "/payrolls",
+    },
+    {
+      Icon: <AppstoreOutlined />,
+      text: "Quản Lý Kho",
+      link: "/store",
+    },
+
     {
       Icon: <HeartOutlined />,
       text: "KH Thân Thiện",

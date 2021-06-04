@@ -4,6 +4,7 @@ import { notification } from "antd";
 import { createBrowserHistory } from "history";
 import axios from "axios";
 import { signinURL } from "../apis/urlsApi";
+import { useHistory } from "react-router";
 const history = createBrowserHistory();
 
 export const signIn = (email, password) => async (dispatch) => {
@@ -113,14 +114,19 @@ export const signOut = () => async (dispatch) => {
 };
 
 export const getUser = () => async (dispatch) => {
-  // await api
-  //   .get(`./profile`)
-  //   .then((res) => res.data)
-  //   .then((res) => {
-  //     dispatch({ type: GET_USER, payload: res.data });
-  //   })
-  //   .catch((err) => {
-  //     throw new Error(err.message);
-  //   });
-  dispatch({ type: GET_USER, payload: "khanhNoi" });
+  await api
+    .get(`./eday/auth/me`)
+    .then((res) => res.data)
+    .then((res) => {
+      console.log("+User:");
+      console.log(res.data);
+      dispatch({ type: GET_USER, payload: res.data });
+      if (res.data == null) {
+        console.log("=>login");
+      }
+    })
+    .catch((err) => {
+      throw new Error(err.message);
+    });
+  //dispatch({ type: GET_USER, payload: "khanhNoi" });
 };

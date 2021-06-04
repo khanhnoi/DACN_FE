@@ -2,8 +2,10 @@
 
 Lưu ý: Nếu gặp lỗi CORS error khi call API
 
+cmd gõ >
+
 ```
-cmd gõ >"C:\Program Files\Google\Chrome\Application\chrome.exe" --disable-web-security --disable-gpu --user-data-dir=~/chromeTemp
+"C:\Program Files\Google\Chrome\Application\chrome.exe" --disable-web-security --disable-gpu --user-data-dir=~/chromeTemp
 
 ```
 

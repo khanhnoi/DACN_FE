@@ -59,6 +59,11 @@ export const AuthenticatedRoutes = [
   },
   {
     exact: true,
+    path: "/payrolls",
+    component: "payroll",
+  },
+  {
+    exact: true,
     path: "/friendly-customter",
     component: "friendlyCustomer",
   },

@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Button, Row, Col, Menu, Dropdown } from "antd";
-import { withRouter } from "react-router-dom";
+import { useHistory, withRouter } from "react-router-dom";
 import { LoginButton, Logo, HeaderContainer, UserButton } from "./styled";
 import { signOut, getUser } from "../../actions/authAction";
 import { Link } from "react-router-dom";
@@ -9,11 +9,13 @@ import { DownOutlined, EyeOutlined, LogoutOutlined } from "@ant-design/icons";
 import logo from "../../assets/images/logo.png";
 import userIcon from "../../assets/images/icon-user.png";
 import api from "../../apis/index";
+import { GET_USER } from "../../actions/types";
 
 const HeaderLayout = (props) => {
   const isSignedIn = useSelector((state) => state.auth.isSignedIn);
-  const username = useSelector((state) => state.auth.profile?.name);
+  const username = useSelector((state) => state.auth.profile?.username);
   const dispatch = useDispatch();
+  const history = useHistory();
 
   //Check your account every page turn
   useEffect(() => {
@@ -23,7 +25,22 @@ const HeaderLayout = (props) => {
       ] = `Basic ${window.localStorage.getItem("token_jwt_eday")}`;
 
       // Bearer
-      dispatch(getUser());
+      //dispatch(getUser()); // ban Cu
+
+      //ban moi, tu logout khi het han login
+      api
+        .get("./eday/auth/me")
+        .then((res) => res.data)
+        .then((res) => {
+          console.log("+User:");
+          console.log(res.data);
+          dispatch({ type: GET_USER, payload: res.data });
+          if (res.data == null) {
+            console.log("=>login");
+            dispatch(signOut());
+            history.push("./login");
+          }
+        });
     }
   }, [dispatch]);
 

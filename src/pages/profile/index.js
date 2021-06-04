@@ -12,7 +12,7 @@ const Profile = () => {
   const dataSource = [
     {
       title: "Tên đăng nhập",
-      info: data?.name,
+      info: data?.username,
     },
     {
       title: "Email",
@@ -24,7 +24,7 @@ const Profile = () => {
     },
     {
       title: "Địa chỉ",
-      info: data?.address,
+      info: data?.addr,
     },
   ];
   const columns = [
@@ -88,7 +88,7 @@ const Profile = () => {
       </Row>
       <Modal
         title="Edit user"
-        visible={visible}
+        //visible={visible}
         // onOk={this.handleOk}
         onCancel={() => setVisible(false)}
       >
@@ -136,7 +136,8 @@ const Profile = () => {
             name="email"
             rules={[
               {
-                pattern: /^([A-Z|a-z|0-9](\.|_){0,1})+[A-Z|a-z|0-9]@([A-Z|a-z|0-9])+((\.){0,1}[A-Z|a-z|0-9]){2}\.[a-z]{2,3}$/gm,
+                pattern:
+                  /^([A-Z|a-z|0-9](\.|_){0,1})+[A-Z|a-z|0-9]@([A-Z|a-z|0-9])+((\.){0,1}[A-Z|a-z|0-9]){2}\.[a-z]{2,3}$/gm,
                 message: "Email không hợp lệ",
               },
             ]}

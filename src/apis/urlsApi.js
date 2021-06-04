@@ -28,6 +28,13 @@ export const getDetailStaffURL = (id) => `./eday/admin/detailStaff/${id}`;
 // export const createProductURL = "./eday/admin/product/create";
 export const updateStaffURL = "./eday/admin/staff/update";
 
+//payrolls
+export const getAllPayrollsURL = "./eday/payroll/getAll";
+// export const deteteStaffURL = `./eday/admin/user/delete`;
+// export const getDetailStaffURL = (id) => `./eday/admin/detailStaff/${id}`;
+// export const createProductURL = "./eday/admin/product/create";
+//export const updateStaffURL = "./eday/admin/staff/update";
+
 // End Product
 // export const baseURL = "http://localhost:8080/";
 // export const baseURL = "http://localhost:8080/";

@@ -28,8 +28,8 @@ export default (state = INTIAL_STATE, action) => {
     case SIGN_OUT:
       return { ...state, isSignedIn: false };
     case GET_USER:
-      return { ...state, profile: mockProfile };
-    // return { ...state, profile: action.payload };
+      // return { ...state, profile: mockProfile };
+      return { ...state, profile: action.payload };
     default:
       return state;
   }
