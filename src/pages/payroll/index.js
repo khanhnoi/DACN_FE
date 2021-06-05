@@ -12,11 +12,17 @@ import {
   ExclamationCircleOutlined,
 } from "@ant-design/icons";
 import { getAllStaffsApi, deleteStaffApi } from "../../apis/staffApi";
-import { getAllPayrollsApi } from "../../apis/payrollApi";
+import {
+  getAllPayrollsApi,
+  updatePayrollDayoffApi,
+} from "../../apis/payrollApi";
 import Loading from "../../components/Loading";
 import { NO_DATA, DELETE_STAFF_SUCCESS } from "../../contanst";
 import imageNotFound from "../../assets/images/image-not-found.jpg";
 import { set } from "lodash";
+import DatePicker from "react-multi-date-picker";
+import DatePanel from "react-multi-date-picker/plugins/date_panel";
+import "./styles.css";
 const { Search } = Input;
 
 const Payrolls = (props) => {
@@ -28,7 +34,16 @@ const Payrolls = (props) => {
   // const [oldStaffs, setOldStaffs] = useState(null);
   const [payrolls, setPayrolls] = useState(null);
   const [oldPayrolls, setOldPayrolls] = useState(null);
-  const [countDelete, setCounDelete] = useState(0);
+  const [countUpdate, setCounUpdate] = useState(0);
+  const [visible, setVisible] = useState(false);
+  //dayOff
+  const [valuesDaySelected, setValuesDaySelected] = useState([]);
+  const [requestDayoff, setRequestDayoff] = useState({
+    id: null,
+    body: {
+      dayOff: [],
+    },
+  });
   const dispatch = useDispatch();
   const history = useHistory();
 
@@ -59,6 +74,56 @@ const Payrolls = (props) => {
       key: "dayOff",
       render: (src) => (src ? src : NO_DATA),
     },
+
+    {
+      title: "dayOff2",
+      dataIndex: "func",
+      key: "func",
+      render: (text, record) => {
+        //console.log(record?.dayOff);
+        //console.log({ record });
+        let valuesDay = [];
+        if (record?.dayOff != "") {
+          let dayOffs = record?.dayOff?.split(",");
+
+          //console.log(dayOffs);
+
+          //console.log(record?.payRollIdentity?.month)
+          //get year and month from date api
+          const year =
+            record?.payRollIdentity?.month[0] +
+            record?.payRollIdentity?.month[1] +
+            record?.payRollIdentity?.month[2] +
+            record?.payRollIdentity?.month[3];
+          const month =
+            record?.payRollIdentity?.month[4] +
+            record?.payRollIdentity?.month[5];
+          //console.log({ year });
+          //console.log({ month });
+
+          const day = new Date(Number(year), Number(month - 1), 1, 0);
+          day.setDate(1);
+          for (let i = 0; i < dayOffs?.length; i++) {
+            //console.log(Number(dayOffs[i]));
+            valuesDay.push(day.setDate(Number(dayOffs[i])));
+          }
+        }
+
+        return (
+          <>
+            <span>
+              <DatePicker
+                value={valuesDay}
+                //onChange={setValues}
+                multiple
+                plugins={[<DatePanel />]}
+                className="dayoff-custom"
+              />
+            </span>
+          </>
+        );
+      },
+    },
     {
       title: "dayWork",
       dataIndex: "dayWork",
@@ -81,7 +146,8 @@ const Payrolls = (props) => {
       title: "status",
       dataIndex: "status",
       key: "status",
-      render: (src) => (src ? src : NO_DATA),
+      render: (src) => (src == true ? "Ok" : "Not Yet"),
+      //render: (src) => (src ? src : NO_DATA),
     },
     {
       title: "totalSalary",
@@ -102,8 +168,9 @@ const Payrolls = (props) => {
     //     ></Checkbox>
     //   ),
     // },
+
     {
-      title: "" || "Chức Năng",
+      title: " " || "Chức Năng",
       dataIndex: "func",
       key: "func",
       render: (text, record) => (
@@ -113,18 +180,45 @@ const Payrolls = (props) => {
               type="primary"
               style={{ marginRight: "10px" }}
               onClick={() => {
-                console.log(`Edit ${record?.id}`);
-                history.push(`staffs/id/${record?.id}`);
+                console.log(`Edit ${record?.worker?.id}`);
+                setRequestDayoff({ ...requestDayoff, id: record?.worker?.id });
+                //dayOff
+                let valuesDay = [];
+                if (record?.dayOff != "") {
+                  let dayOffs = record?.dayOff?.split(",");
+
+                  //get year and month from date api
+                  const year =
+                    record?.payRollIdentity?.month[0] +
+                    record?.payRollIdentity?.month[1] +
+                    record?.payRollIdentity?.month[2] +
+                    record?.payRollIdentity?.month[3];
+                  const month =
+                    record?.payRollIdentity?.month[4] +
+                    record?.payRollIdentity?.month[5];
+                  //console.log({ year });
+                  //console.log({ month });
+
+                  const day = new Date(Number(year), Number(month - 1), 1, 0);
+                  day.setDate(1);
+                  for (let i = 0; i < dayOffs?.length; i++) {
+                    //console.log(Number(dayOffs[i]));
+                    valuesDay.push(day.setDate(Number(dayOffs[i])));
+                  }
+                }
+
+                setValuesDaySelected(valuesDay);
+                setVisible(true);
               }}
               icon={<EditOutlined />}
             ></Button>
-            <Button
+            {/* <Button
               danger
               onClick={() =>
                 handleDeleteUser(record?.id, record?.username, record?.stt)
               }
               icon={<DeleteOutlined />}
-            ></Button>
+            ></Button> */}
           </span>
         </>
       ),
@@ -179,7 +273,7 @@ const Payrolls = (props) => {
             console.log({ res });
 
             //index = stt - 1
-            setCounDelete(countDelete + 1);
+            //setCounDelete(countDelete + 1);
 
             // Display
             notification["success"]({
@@ -232,7 +326,7 @@ const Payrolls = (props) => {
       setPayrolls(res?.data?.data);
       setOldPayrolls(res?.data?.data);
     });
-  }, [dispatch, countDelete]);
+  }, [dispatch, countUpdate]);
 
   useEffect(() => {}, [payrolls]);
 
@@ -268,6 +362,51 @@ const Payrolls = (props) => {
           )}
         </Col>
       </Row>
+      <Modal
+        title="Update Payroll"
+        visible={visible}
+        onOk={() => {
+          console.log({ requestDayoff });
+          updatePayrollDayoffApi(requestDayoff)
+            .then((res) => res.data)
+            .then((res) => {
+              console.log({ res });
+
+              setCounUpdate(countUpdate + 1);
+              // Display
+              notification["success"]({
+                message: "Payroll DayOff Success",
+                duration: 3,
+              });
+            })
+            .catch((error) => {
+              console.log(error);
+              notification["error"]({
+                message: error.message,
+                duration: 3,
+              });
+            });
+          setVisible(false);
+        }}
+        onCancel={() => setVisible(false)}
+      >
+        <DatePicker
+          value={valuesDaySelected}
+          //onChange={setValues}
+          multiple
+          plugins={[<DatePanel />]}
+          className="dayoff-selected-custom"
+          onChange={(dates) => {
+            //console.log(dates);
+            const reqBodyDayOff = dates.map((e) => e.day).sort((a, b) => a - b);
+            //console.log({ reqBodyDayOff });
+            setRequestDayoff({
+              ...requestDayoff,
+              body: { dayOff: reqBodyDayOff },
+            });
+          }}
+        />
+      </Modal>
     </div>
   );
 };

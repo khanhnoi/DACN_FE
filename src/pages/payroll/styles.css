@@ -1,0 +1,20 @@
+.dayoff-custom {
+    pointer-events: none !important;
+}
+
+.dayoff-custom .rmdp-arrow-container {
+    pointer-events: none !important;
+    display: none;
+}
+
+.dayoff-custom .b-deselect {
+    display: none !important;
+}
+
+
+/* dayoff-selected-custom */
+
+.dayoff-selected-custom .rmdp-arrow-container {
+    pointer-events: none !important;
+    display: none;
+}

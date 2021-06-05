@@ -1,11 +1,5 @@
 import api from "./index";
-import {
-  // getDetailStaffURL,
-  // getAllStaffsURL,
-  // updateStaffURL,
-  // deteteStaffURL,
-  getAllPayrollsURL,
-} from "./urlsApi";
+import { updatePayrollDayoffURL, getAllPayrollsURL } from "./urlsApi";
 
 // STAFF
 export const getAllPayrollsApi = async () => {
@@ -24,9 +18,9 @@ export const getAllPayrollsApi = async () => {
 //   return await api.post(createProductURL, request);
 // };
 
-// export const updateStaffApi = async (request) => {
-//   return await api.post(updateStaffURL, request);
-// };
+export const updatePayrollDayoffApi = async (requestRaw) => {
+  return await api.post(updatePayrollDayoffURL(requestRaw.id), requestRaw.body);
+};
 
 // export const getListCategoryApi = async () => {
 //   return await api.get(getListCategoryURL);

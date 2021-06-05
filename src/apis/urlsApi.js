@@ -31,7 +31,8 @@ export const updateStaffURL = "./eday/admin/staff/update";
 //payrolls
 export const getAllPayrollsURL = "./eday/payroll/getAll";
 // export const deteteStaffURL = `./eday/admin/user/delete`;
-// export const getDetailStaffURL = (id) => `./eday/admin/detailStaff/${id}`;
+export const updatePayrollDayoffURL = (id) =>
+  `eday/admin/${id}/dayOffOrdayWork/update`;
 // export const createProductURL = "./eday/admin/product/create";
 //export const updateStaffURL = "./eday/admin/staff/update";
 
