@@ -15,6 +15,8 @@ import { getAllStaffsApi, deleteStaffApi } from "../../apis/staffApi";
 import {
   getAllPayrollsApi,
   updatePayrollDayoffApi,
+  createPayRollMonthApi,
+  updatePayrollStatusApi,
 } from "../../apis/payrollApi";
 import Loading from "../../components/Loading";
 import { NO_DATA, DELETE_STAFF_SUCCESS } from "../../contanst";
@@ -37,11 +39,33 @@ const Payrolls = (props) => {
   const [countUpdate, setCounUpdate] = useState(0);
   const [visible, setVisible] = useState(false);
   //dayOff
+  const [isDayOff, setIsDayOff] = useState(false);
   const [valuesDaySelected, setValuesDaySelected] = useState([]);
   const [requestDayoff, setRequestDayoff] = useState({
     id: null,
     body: {
       dayOff: [],
+    },
+  });
+  //status pay
+  const [isStatusPayroll, setIsStatusPayroll] = useState(false);
+  const [isStatusPayrollCheckbox, setIsStatusPayrollCheckbox] = useState(true);
+  const [statusPayroll, setStatusPayroll] = useState(false);
+  const [requestStatus, setRequestStatus] = useState({
+    id: null,
+    body: {
+      month: "",
+    },
+  });
+  //bonus
+  const [isBouns, setIsBouns] = useState(false);
+  const [isBounsInput, setIsBounsInput] = useState(false);
+  const [requestBouns, setRequestBouns] = useState({
+    id: null,
+    body: {
+      month: null,
+      bonus: null,
+      comment: null,
     },
   });
   const dispatch = useDispatch();
@@ -182,6 +206,16 @@ const Payrolls = (props) => {
               onClick={() => {
                 console.log(`Edit ${record?.worker?.id}`);
                 setRequestDayoff({ ...requestDayoff, id: record?.worker?.id });
+                setRequestStatus({
+                  ...requestStatus,
+                  id: record?.worker?.id,
+                  body: { month: record?.payRollIdentity?.month },
+                });
+                // neu status la true thi ko can call api nua, statusPayroll la trang thai UI nen se nguoc lai
+                setStatusPayroll(record?.status);
+                // Mo checkBox de co the call api
+                if (record?.status == false) setIsStatusPayrollCheckbox(false);
+
                 //dayOff
                 let valuesDay = [];
                 if (record?.dayOff != "") {
@@ -253,31 +287,29 @@ const Payrolls = (props) => {
     console.log({ data });
     setPayrolls(data);
   };
-  const handleDeleteUser = (id, name, stt) => {
+  const handleCreatePayRollMonth = () => {
     Modal.confirm({
       title: "Warning",
       icon: <ExclamationCircleOutlined />,
-      content: `Delete payroll ${name}. Once deleted, it cannot be completed ...
+      content: `Create PayRoll Month ?
       `,
-      okText: "Delete",
+      okText: "OK",
       cancelText: "Cancel",
       onOk: () => {
-        console.log("Xu Ly Xoa");
+        console.log("createPayRollMonth........");
         // Display
-        console.log({ id });
-        deleteStaffApi({ id })
+
+        createPayRollMonthApi()
           .then((res) => res.data)
           .then((res) => {
             // if (res.data) {
 
             console.log({ res });
-
-            //index = stt - 1
-            //setCounDelete(countDelete + 1);
+            setCounUpdate(countUpdate + 1);
 
             // Display
             notification["success"]({
-              message: DELETE_STAFF_SUCCESS,
+              message: "Create PayRoll Month Success",
               duration: 3,
             });
 
@@ -333,8 +365,13 @@ const Payrolls = (props) => {
   return (
     <div style={{ padding: "20px", minHeight: "calc(100vh - 70px)" }}>
       <Row style={{ marginBottom: "10px" }}>
-        <Col span={12}>
+        <Col span={24}>
           <h5>Payroll manager</h5>
+        </Col>
+        <Col span={12}>
+          <Button onClick={handleCreatePayRollMonth} type="primary">
+            Create PayRoll Month
+          </Button>
         </Col>
         <Col span={12}>
           <Search
@@ -366,30 +403,62 @@ const Payrolls = (props) => {
         title="Update Payroll"
         visible={visible}
         onOk={() => {
-          console.log({ requestDayoff });
-          updatePayrollDayoffApi(requestDayoff)
-            .then((res) => res.data)
-            .then((res) => {
-              console.log({ res });
+          //payroll dayoff
+          if (isDayOff) {
+            console.log({ requestDayoff });
+            updatePayrollDayoffApi(requestDayoff)
+              .then((res) => res.data)
+              .then((res) => {
+                console.log({ res });
 
-              setCounUpdate(countUpdate + 1);
-              // Display
-              notification["success"]({
-                message: "Payroll DayOff Success",
-                duration: 3,
+                setCounUpdate(countUpdate + 1);
+                // Display
+                notification["success"]({
+                  message: "Payroll DayOff Success",
+                  duration: 3,
+                });
+              })
+              .catch((error) => {
+                console.log(error);
+                notification["error"]({
+                  message: error.message,
+                  duration: 3,
+                });
               });
-            })
-            .catch((error) => {
-              console.log(error);
-              notification["error"]({
-                message: error.message,
-                duration: 3,
+
+            setIsDayOff(false);
+          }
+
+          //payroll change Status
+          console.log({ isStatusPayroll });
+          if (isStatusPayroll) {
+            updatePayrollStatusApi(requestStatus)
+              .then((res) => res.data)
+              .then((res) => {
+                console.log({ res });
+
+                setCounUpdate(countUpdate + 1);
+                // Display
+                notification["success"]({
+                  message: "Payroll Status Success",
+                  duration: 3,
+                });
+              })
+              .catch((error) => {
+                console.log(error);
+                notification["error"]({
+                  message: error.message,
+                  duration: 3,
+                });
               });
-            });
+            setIsStatusPayroll(false);
+          }
+
           setVisible(false);
         }}
         onCancel={() => setVisible(false)}
       >
+        <h6>Payroll DayOff:</h6>
         <DatePicker
           value={valuesDaySelected}
           //onChange={setValues}
@@ -398,6 +467,7 @@ const Payrolls = (props) => {
           className="dayoff-selected-custom"
           onChange={(dates) => {
             //console.log(dates);
+            setIsDayOff(true);
             const reqBodyDayOff = dates.map((e) => e.day).sort((a, b) => a - b);
             //console.log({ reqBodyDayOff });
             setRequestDayoff({
@@ -406,6 +476,22 @@ const Payrolls = (props) => {
             });
           }}
         />
+        <h6>Status:</h6>
+        <Checkbox
+          // neu status la true thi ko can call api nua, statusPayroll la trang thai UI nen se nguoc lai
+          checked={statusPayroll}
+          onChange={(e) => {
+            console.log(`checked = ${e.target.checked}`);
+            //if(e.target.checked) {
+            setStatusPayroll(e.target.checked);
+            setIsStatusPayroll(true);
+            //}
+          }}
+          // neu status la true thi ko can call api nua, statusPayroll la trang thai UI nen se nguoc lai
+          disabled={isStatusPayrollCheckbox}
+        >
+          Status Pay
+        </Checkbox>
       </Modal>
     </div>
   );

@@ -1,27 +1,25 @@
 import api from "./index";
-import { updatePayrollDayoffURL, getAllPayrollsURL } from "./urlsApi";
+import {
+  updatePayrollDayoffURL,
+  getAllPayrollsURL,
+  createPayRollMonthURL,
+  updatePayrollStatusURL,
+} from "./urlsApi";
 
 // STAFF
 export const getAllPayrollsApi = async () => {
   return await api.get(getAllPayrollsURL);
 };
 
-// export const getDetailStaffApi = async (id) => {
-//   return await api.get(getDetailStaffURL(id));
-// };
-
-// export const deleteStaffApi = async (request) => {
-//   return await api.post(deteteStaffURL, request);
-// };
-
-// export const createProductApi = async (request) => {
-//   return await api.post(createProductURL, request);
-// };
+export const createPayRollMonthApi = async () => {
+  // not boby req
+  return await api.post(createPayRollMonthURL);
+};
 
 export const updatePayrollDayoffApi = async (requestRaw) => {
   return await api.post(updatePayrollDayoffURL(requestRaw.id), requestRaw.body);
 };
 
-// export const getListCategoryApi = async () => {
-//   return await api.get(getListCategoryURL);
-// };
+export const updatePayrollStatusApi = async (requestRaw) => {
+  return await api.post(updatePayrollStatusURL(requestRaw.id), requestRaw.body);
+};
