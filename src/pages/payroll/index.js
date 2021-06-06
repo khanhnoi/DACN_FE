@@ -28,6 +28,7 @@ import {
   createPayRollMonthApi,
   updatePayrollStatusApi,
   updatePayrollBounsApi,
+  downloadPayRollExportApi,
 } from "../../apis/payrollApi";
 import Loading from "../../components/Loading";
 import { NO_DATA, DELETE_STAFF_SUCCESS } from "../../contanst";
@@ -36,6 +37,8 @@ import { set } from "lodash";
 import DatePicker from "react-multi-date-picker";
 import DatePanel from "react-multi-date-picker/plugins/date_panel";
 import "./styles.css";
+import fileDownload from "js-file-download";
+import Axios from "axios";
 const { Search } = Input;
 
 const Payrolls = (props) => {
@@ -97,21 +100,21 @@ const Payrolls = (props) => {
       // ),
       render: (src) => (src ? src : NO_DATA),
     },
-    {
-      title: "comment",
-      dataIndex: "comment",
-      key: "comment",
-      render: (src) => (src ? src : NO_DATA),
-    },
-    {
-      title: "dayOff",
-      dataIndex: "dayOff",
-      key: "dayOff",
-      render: (src) => (src ? src : NO_DATA),
-    },
+    // {
+    //   title: "comment",
+    //   dataIndex: "comment",
+    //   key: "comment",
+    //   render: (src) => (src ? src : NO_DATA),
+    // },
+    // {
+    //   title: "dayOff",
+    //   dataIndex: "dayOff",
+    //   key: "dayOff",
+    //   render: (src) => (src ? src : NO_DATA),
+    // },
 
     {
-      title: "dayOff2",
+      title: "Day Off",
       dataIndex: "func",
       key: "func",
       render: (text, record) => {
@@ -357,6 +360,50 @@ const Payrolls = (props) => {
     });
   };
 
+  const handleDownloadPayRollExport = () => {
+    const now = new Date();
+    const year = now.getYear() + 1900;
+    const month = now.getMonth() + 1;
+    //console.log(year, month);
+    const requestDownLoad = {
+      month: `${year}${month > 9 ? month : `0${month}`}`,
+    };
+    console.log({ requestDownLoad });
+    downloadPayRollExportApi(requestDownLoad).then(({ data }) => {
+      fileDownload(data, "PayRollExport.xls");
+      console.log("success!", data);
+    });
+
+    // Axios({
+    //   url: "http://localhost:8080/eday/payroll/downloadPayRollExport",
+    //   method: "GET",
+    //   responseType: "blob", // Important
+    // }).then((response) => {
+    //   console.log(response);
+    //   FileDownload(response.data, "report.xsl");
+    // });
+
+    // function getFileToDownload(apiUrl) {
+    //   return Axios.get(apiUrl, requestDownLoad, {
+    //     responseType: "arraybuffer",
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //     },
+    //   });
+    // }
+
+    // getFileToDownload(
+    //   "http://localhost:8080/eday/payroll/downloadPayRollExport"
+    // ).then((response) => {
+    //   const type = response.headers["content-type"];
+    //   const blob = new Blob([response.data], { type: type, encoding: "UTF-8" });
+    //   const link = document.createElement("a");
+    //   link.href = window.URL.createObjectURL(blob);
+    //   link.download = "file.xlsx";
+    //   link.click();
+    // });
+  };
+
   useEffect(() => {
     // dispatch(fetchStaffs());
     // async function fetchFakeAPI() {
@@ -417,6 +464,11 @@ const Payrolls = (props) => {
           ) : (
             <Loading />
           )}
+        </Col>
+        <Col span={12}>
+          <Button onClick={handleDownloadPayRollExport} type="primary">
+            Download PayRoll Export
+          </Button>
         </Col>
       </Row>
       <Modal

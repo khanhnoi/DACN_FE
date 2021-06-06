@@ -36,6 +36,8 @@ export const updatePayrollDayoffURL = (id) =>
 export const updatePayrollStatusURL = (id) => `./eday/payroll/${id}/pay`;
 export const updatePayrollBounsURL = (id) => `./eday/payroll/${id}/updateBonus`;
 
+export const downloadPayRollExportURL = "./eday/payroll/downloadPayRollExport";
+
 // export const createProductURL = "./eday/admin/product/create";
 //export const updateStaffURL = "./eday/admin/staff/update";
 

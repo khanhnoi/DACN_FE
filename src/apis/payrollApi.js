@@ -5,6 +5,7 @@ import {
   createPayRollMonthURL,
   updatePayrollStatusURL,
   updatePayrollBounsURL,
+  downloadPayRollExportURL,
 } from "./urlsApi";
 
 // STAFF
@@ -27,4 +28,9 @@ export const updatePayrollStatusApi = async (requestRaw) => {
 
 export const updatePayrollBounsApi = async (requestRaw) => {
   return await api.post(updatePayrollBounsURL(requestRaw.id), requestRaw.body);
+};
+
+export const downloadPayRollExportApi = async (request) => {
+  console.log(request);
+  return await api.post(downloadPayRollExportURL, request);
 };
