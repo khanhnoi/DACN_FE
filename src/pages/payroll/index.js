@@ -2,7 +2,17 @@ import React, { useState, useEffect, useCallback } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router";
 
-import { Row, Col, Select, Table, Button, Checkbox, Input, Modal } from "antd";
+import {
+  Row,
+  Col,
+  Select,
+  Table,
+  Button,
+  Checkbox,
+  Input,
+  Modal,
+  Space,
+} from "antd";
 import { notification } from "antd";
 import { getFakeDataStaffs } from "../../apis/fakeApis";
 import {
@@ -17,6 +27,7 @@ import {
   updatePayrollDayoffApi,
   createPayRollMonthApi,
   updatePayrollStatusApi,
+  updatePayrollBounsApi,
 } from "../../apis/payrollApi";
 import Loading from "../../components/Loading";
 import { NO_DATA, DELETE_STAFF_SUCCESS } from "../../contanst";
@@ -58,8 +69,8 @@ const Payrolls = (props) => {
     },
   });
   //bonus
-  const [isBouns, setIsBouns] = useState(false);
-  const [isBounsInput, setIsBounsInput] = useState(false);
+  //const [isBouns, setIsBouns] = useState(false);
+  //const [isBounsInput, setIsBounsInput] = useState(false);
   const [requestBouns, setRequestBouns] = useState({
     id: null,
     body: {
@@ -210,6 +221,15 @@ const Payrolls = (props) => {
                   ...requestStatus,
                   id: record?.worker?.id,
                   body: { month: record?.payRollIdentity?.month },
+                });
+                setRequestBouns({
+                  ...requestBouns,
+                  id: record?.worker?.id,
+                  body: {
+                    month: record?.payRollIdentity?.month,
+                    bonus: record?.bonus,
+                    comment: record?.comment,
+                  },
                 });
                 // neu status la true thi ko can call api nua, statusPayroll la trang thai UI nen se nguoc lai
                 setStatusPayroll(record?.status);
@@ -454,6 +474,29 @@ const Payrolls = (props) => {
             setIsStatusPayroll(false);
           }
 
+          //payroll change Bouns
+          if (true) {
+            updatePayrollBounsApi(requestBouns)
+              .then((res) => res.data)
+              .then((res) => {
+                console.log({ res });
+
+                setCounUpdate(countUpdate + 1);
+                // Display
+                notification["success"]({
+                  message: "Payroll Bouns Success",
+                  duration: 3,
+                });
+              })
+              .catch((error) => {
+                console.log(error);
+                notification["error"]({
+                  message: error.message,
+                  duration: 3,
+                });
+              });
+          }
+
           setVisible(false);
         }}
         onCancel={() => setVisible(false)}
@@ -476,6 +519,7 @@ const Payrolls = (props) => {
             });
           }}
         />
+        <br />
         <h6>Status:</h6>
         <Checkbox
           // neu status la true thi ko can call api nua, statusPayroll la trang thai UI nen se nguoc lai
@@ -492,6 +536,37 @@ const Payrolls = (props) => {
         >
           Status Pay
         </Checkbox>
+        <br />
+        <h6>Update Bouns:</h6>
+        {/* <Space direction="vertical"> */}
+        <Input
+          key="bouns"
+          type="number"
+          value={requestBouns?.body?.bonus}
+          placeholder="Value Bonus"
+          onChange={(e) => {
+            console.log(e.target.value);
+            setRequestBouns({
+              ...requestBouns,
+              body: { ...requestBouns.body, bonus: e.target.value },
+            });
+          }}
+        />
+        <br />
+        <Input
+          key="cmt"
+          type="text"
+          value={requestBouns?.body?.comment}
+          placeholder="Comment"
+          onChange={(e) => {
+            console.log(e.target.value);
+            setRequestBouns({
+              ...requestBouns,
+              body: { ...requestBouns.body, comment: e.target.value },
+            });
+          }}
+        />
+        {/* </Space> */}
       </Modal>
     </div>
   );

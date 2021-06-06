@@ -33,7 +33,8 @@ export const getAllPayrollsURL = "./eday/payroll/getAll";
 export const createPayRollMonthURL = `./eday/payroll/createPayRollMonth`;
 export const updatePayrollDayoffURL = (id) =>
   `eday/admin/${id}/dayOffOrdayWork/update`;
-export const updatePayrollStatusURL = (id) => `eday/payroll/${id}/pay`;
+export const updatePayrollStatusURL = (id) => `./eday/payroll/${id}/pay`;
+export const updatePayrollBounsURL = (id) => `./eday/payroll/${id}/updateBonus`;
 
 // export const createProductURL = "./eday/admin/product/create";
 //export const updateStaffURL = "./eday/admin/staff/update";
