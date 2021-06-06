@@ -480,8 +480,14 @@ const Payrolls = (props) => {
               .then((res) => res.data)
               .then((res) => {
                 console.log({ res });
-
-                setCounUpdate(countUpdate + 1);
+                if (res.errormessage?.length > 0) {
+                  notification["error"]({
+                    message: res.errormessage,
+                    duration: 3,
+                  });
+                } else {
+                  setCounUpdate(countUpdate + 1);
+                }
                 // Display
                 notification["success"]({
                   message: "Payroll Bouns Success",
@@ -545,12 +551,13 @@ const Payrolls = (props) => {
           value={requestBouns?.body?.bonus}
           placeholder="Value Bonus"
           onChange={(e) => {
-            console.log(e.target.value);
+            //console.log(e.target.value);
             setRequestBouns({
               ...requestBouns,
               body: { ...requestBouns.body, bonus: e.target.value },
             });
           }}
+          disabled={isStatusPayrollCheckbox}
         />
         <br />
         <Input
@@ -559,12 +566,13 @@ const Payrolls = (props) => {
           value={requestBouns?.body?.comment}
           placeholder="Comment"
           onChange={(e) => {
-            console.log(e.target.value);
+            //console.log(e.target.value);
             setRequestBouns({
               ...requestBouns,
               body: { ...requestBouns.body, comment: e.target.value },
             });
           }}
+          disabled={isStatusPayrollCheckbox}
         />
         {/* </Space> */}
       </Modal>
