@@ -44,8 +44,8 @@ export const AuthenticatedRoutes = [
   },
   {
     exact: true,
-    path: "/store",
-    component: "store",
+    path: "/warehouse",
+    component: "warehouse",
   },
   {
     exact: true,

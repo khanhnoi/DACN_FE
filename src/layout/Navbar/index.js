@@ -43,8 +43,8 @@ const Navbar = (props) => {
     },
     {
       Icon: <AppstoreOutlined />,
-      text: "Quản Lý Kho",
-      link: "/store",
+      text: "Ware House",
+      link: "/warehouse",
     },
 
     {

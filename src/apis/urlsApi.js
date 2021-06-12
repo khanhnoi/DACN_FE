@@ -38,6 +38,10 @@ export const updatePayrollBounsURL = (id) => `./eday/payroll/${id}/updateBonus`;
 
 export const downloadPayRollExportURL = "./eday/payroll/downloadPayRollExport";
 
+// Warehouse
+export const getAllWarehouseURL = "./eday/warehouse/getAll";
+export const getTotalWarehouseURL = "./eday/warehouse/total";
+
 // export const createProductURL = "./eday/admin/product/create";
 //export const updateStaffURL = "./eday/admin/staff/update";
 
