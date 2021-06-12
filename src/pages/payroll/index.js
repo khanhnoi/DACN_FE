@@ -162,24 +162,24 @@ const Payrolls = (props) => {
         );
       },
     },
-    {
-      title: "dayWork",
-      dataIndex: "dayWork",
-      key: "dayWork",
-      render: (src) => (src ? src : NO_DATA),
-    },
-    {
-      title: "hourOfDay",
-      dataIndex: "hourOfDay",
-      key: "hourOfDay",
-      render: (src) => (src ? src : NO_DATA),
-    },
-    {
-      title: "salaryToMonth",
-      dataIndex: "salaryToMonth",
-      key: "salaryToMonth",
-      render: (src) => (src ? src : NO_DATA),
-    },
+    // {
+    //   title: "Day Work",
+    //   dataIndex: "dayWork",
+    //   key: "dayWork",
+    //   render: (src) => (src ? src : NO_DATA),
+    // },
+    // {
+    //   title: "Hour Of Day",
+    //   dataIndex: "hourOfDay",
+    //   key: "hourOfDay",
+    //   render: (src) => (src ? src : NO_DATA),
+    // },
+    // {
+    //   title: "Salary To Month",
+    //   dataIndex: "salaryToMonth",
+    //   key: "salaryToMonth",
+    //   render: (src) => (src ? src : NO_DATA),
+    // },
     {
       title: "status",
       dataIndex: "status",
