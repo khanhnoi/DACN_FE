@@ -34,3 +34,6 @@ export const UPDATE_STAFF_FAILD =
 export const CREATE_STAFF_SUCCESS =
   "Successfully added Staff" || "Thêm nhân viên thành công";
 export const CREATE_STAFF_FAILD = "Add Staff failed";
+
+//order
+export const DELETE_ORDER_SUCCESS = "Order remove successful";

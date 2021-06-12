@@ -42,6 +42,11 @@ export const downloadPayRollExportURL = "./eday/payroll/downloadPayRollExport";
 export const getAllWarehouseURL = "./eday/warehouse/getAll";
 export const getTotalWarehouseURL = "./eday/warehouse/total";
 
+// Warehouse
+export const getAlldOrderURL = "./eday/admin/order/getAll";
+export const deleteOrdertURL = (id) => `./eday/admin/order/${id}/delete`;
+//export const getTotalWarehouseURL = "./eday/warehouse/total";
+
 // export const createProductURL = "./eday/admin/product/create";
 //export const updateStaffURL = "./eday/admin/staff/update";
 

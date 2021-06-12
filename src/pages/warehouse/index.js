@@ -74,37 +74,37 @@ const Warehouse = (props) => {
       title: "Amount",
       dataIndex: "amount",
       key: "amount",
-      render: (src) => (src ? src : NO_DATA),
+      render: (src) => (src ? src : NO_DATA_NUMBER),
     },
     {
       title: "Profit",
       dataIndex: "profit",
       key: "profit",
-      render: (src) => (src ? src : NO_DATA),
+      render: (src) => (src ? src : NO_DATA_NUMBER),
     },
     {
       title: "Salerable Quantity",
       dataIndex: "salerableQuantity",
       key: "salerableQuantity",
-      render: (src) => (src ? src : NO_DATA),
+      render: (src) => (src ? src : NO_DATA_NUMBER),
     },
     {
       title: "Stock Quantity",
       dataIndex: "stockQuantity",
       key: "stockQuantity",
-      render: (src) => (src ? src : NO_DATA),
+      render: (src) => (src ? src : NO_DATA_NUMBER),
     },
     {
       title: "Total MoneyBuy",
       dataIndex: "totalMoneyBuy",
       key: "totalMoneyBuy",
-      render: (src) => (src ? src : NO_DATA),
+      render: (src) => (src ? src : NO_DATA_NUMBER),
     },
     {
       title: "Total MoneySell",
       dataIndex: "totalMoneySell",
       key: "totalMoneySell",
-      render: (src) => (src ? src : NO_DATA),
+      render: (src) => (src ? src : NO_DATA_NUMBER),
     },
 
     // {

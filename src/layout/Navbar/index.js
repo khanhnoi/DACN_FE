@@ -49,9 +49,14 @@ const Navbar = (props) => {
 
     {
       Icon: <HeartOutlined />,
-      text: "KH Thân Thiện",
-      link: "/friendly-customter",
+      text: "Order",
+      link: "/order",
     },
+    // {
+    //   Icon: <HeartOutlined />,
+    //   text: "KH Thân Thiện",
+    //   link: "/friendly-customter",
+    // },
   ];
 
   return (
