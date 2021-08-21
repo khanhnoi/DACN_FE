@@ -69,3 +69,12 @@ DEALINE: TRƯỚC NGÀY 28 TẾT.(LẦN NÀY YÊU CẦU MỌI NGƯỜI TẬP TRU
 
 Thiết kế database:
 Sau Tết sẽ họp để triển khai sau (Nếu hết dịch ^^)
+
+---
+
+- Users : tạo user => signup ( đăng kí TK mới) - view and edit (ROLE), delete, search
+- Products : create, view and edit, search
+- Staffs : tạo staff => từ users --> edit ROLE --> ROLE_STAFF - view and edit, delete, search
+- Payroll: tạo payroll ( Khi 1 staff dc tạo ra sẽ tạo ra 1 payroll) -> edit payroll ( muôn edit dc thi staff phải đưỢc update Lương đã) - view, search, edit ( 1. DayOff 2. Status 3.Bouns, cmt ) . status false => edit dc ? - Create RayRoll Month - Download PayRoll Export
+- WareHouse:
+- Order:

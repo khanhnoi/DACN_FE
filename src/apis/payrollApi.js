@@ -19,6 +19,7 @@ export const createPayRollMonthApi = async () => {
 };
 
 export const updatePayrollDayoffApi = async (requestRaw) => {
+  console.log({ requestRaw });
   return await api.post(updatePayrollDayoffURL(requestRaw.id), requestRaw.body);
 };
 

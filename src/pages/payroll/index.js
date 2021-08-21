@@ -219,15 +219,21 @@ const Payrolls = (props) => {
               style={{ marginRight: "10px" }}
               onClick={() => {
                 console.log(`Edit ${record?.worker?.id}`);
-                setRequestDayoff({ ...requestDayoff, id: record?.worker?.id });
+                const newId = record?.worker?.id;
+                console.log({ requestDayoff });
+                setRequestDayoff({
+                  ...requestDayoff,
+                  id: newId,
+                });
+                console.log({ requestDayoff });
                 setRequestStatus({
                   ...requestStatus,
-                  id: record?.worker?.id,
+                  id: newId,
                   body: { month: record?.payRollIdentity?.month },
                 });
                 setRequestBouns({
                   ...requestBouns,
-                  id: record?.worker?.id,
+                  id: newId,
                   body: {
                     month: record?.payRollIdentity?.month,
                     bonus: record?.bonus,
@@ -265,6 +271,22 @@ const Payrolls = (props) => {
                 }
 
                 setValuesDaySelected(valuesDay);
+                setRequestDayoff({
+                  ...requestDayoff,
+                  id: newId,
+                  body: {
+                    ...requestDayoff.body,
+                    month: record?.payRollIdentity?.month,
+                  },
+                });
+                console.log({
+                  ...requestDayoff,
+                  id: newId,
+                  body: {
+                    ...requestDayoff.body,
+                    month: record?.payRollIdentity?.month,
+                  },
+                });
                 setVisible(true);
               }}
               icon={<EditOutlined />}
@@ -427,7 +449,7 @@ const Payrolls = (props) => {
     });
   }, [dispatch, countUpdate]);
 
-  useEffect(() => {}, [payrolls]);
+  // useEffect(() => {}, [payrolls]);
 
   return (
     <div style={{ padding: "20px", minHeight: "calc(100vh - 70px)" }}>
@@ -498,7 +520,7 @@ const Payrolls = (props) => {
                 });
               });
 
-            setIsDayOff(false);
+            // setIsDayOff(false);
           }
 
           //payroll change Status
@@ -571,10 +593,12 @@ const Payrolls = (props) => {
             setIsDayOff(true);
             const reqBodyDayOff = dates.map((e) => e.day).sort((a, b) => a - b);
             //console.log({ reqBodyDayOff });
+            console.log({ requestDayoff });
             setRequestDayoff({
               ...requestDayoff,
-              body: { dayOff: reqBodyDayOff },
+              body: { ...requestDayoff.body, dayOff: reqBodyDayOff },
             });
+            console.log({ requestDayoff });
           }}
         />
         <br />
