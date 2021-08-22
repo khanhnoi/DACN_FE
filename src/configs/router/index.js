@@ -44,6 +44,16 @@ export const AuthenticatedRoutes = [
   },
   {
     exact: true,
+    path: "/category",
+    component: "category",
+  },
+  // {
+  //   exact: true,
+  //   path: "/categorys/add",
+  //   component: "categoryAdd",
+  // },
+  {
+    exact: true,
     path: "/warehouse",
     component: "warehouse",
   },

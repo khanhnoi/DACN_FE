@@ -92,6 +92,12 @@ const Payrolls = (props) => {
       key: "stt",
     },
     {
+      title: "Name",
+      dataIndex: "name",
+      key: "name",
+      render: (text, record) => record?.worker?.user?.username,
+    },
+    {
       title: "Bonus",
       dataIndex: "bonus",
       key: "bonus",
@@ -217,7 +223,9 @@ const Payrolls = (props) => {
             <Button
               type="primary"
               style={{ marginRight: "10px" }}
+              disabled={record?.status}
               onClick={() => {
+                console.log({ record });
                 console.log(`Edit ${record?.worker?.id}`);
                 const newId = record?.worker?.id;
                 console.log({ requestDayoff });

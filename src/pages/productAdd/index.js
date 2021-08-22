@@ -156,7 +156,8 @@ const ProductAdd = (props) => {
       // resquest.catId == ("" || 0) ||
       resquest.price_buy == "" ||
       resquest.price_sell == "" ||
-      resquest.size == ""
+      resquest.size == "" ||
+      resquest.catId == ("" || 0)
     ) {
       notification["warning"]({
         message: WARNING_INPUT,

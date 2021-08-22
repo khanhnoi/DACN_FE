@@ -17,6 +17,7 @@ export const UPDATE_PRODUCT_FAILD =
 export const CREATE_PRODUCT_SUCCESS =
   "Successfully added product" || "Thêm sản phẩm thành công";
 export const CREATE_PRODUCT_FAILD = "Add product failed";
+export const DELETE_CATEGORY_SUCCESS = "Category remove successful";
 
 //user
 

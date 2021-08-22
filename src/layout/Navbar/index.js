@@ -14,6 +14,7 @@ import {
   HeartOutlined,
   UsergroupDeleteOutlined,
   MoneyCollectOutlined,
+  AlignLeftOutlined,
 } from "@ant-design/icons";
 
 const { Header, Sider, Content } = Layout;
@@ -30,6 +31,11 @@ const Navbar = (props) => {
       Icon: <ShoppingCartOutlined />,
       text: "Products" || "Quản lý Sản Phẩm",
       link: "/products",
+    },
+    {
+      Icon: <AlignLeftOutlined />,
+      text: "Category" || "Quản lý Loại Sp",
+      link: "/category",
     },
     {
       Icon: <UsergroupDeleteOutlined />,

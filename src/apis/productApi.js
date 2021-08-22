@@ -7,6 +7,9 @@ import {
   getListCategoryURL,
   deteteProductURL,
   getAllUsersURL,
+  deteteCategoryURL,
+  updateCategoryURL,
+  createCategoryURL,
 } from "./urlsApi";
 
 export const getAllProductApi = async () => {
@@ -31,6 +34,18 @@ export const updateProductApi = async (request) => {
 
 export const getListCategoryApi = async () => {
   return await api.get(getListCategoryURL);
+};
+
+export const deleteCategoryApi = async (id) => {
+  return await api.delete(deteteCategoryURL(id));
+};
+
+export const updateCategoryApi = async (request) => {
+  return await api.post(updateCategoryURL, request);
+};
+
+export const createCategoryApi = async (request) => {
+  return await api.post(createCategoryURL, request);
 };
 
 // USERS

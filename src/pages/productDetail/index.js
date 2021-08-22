@@ -47,9 +47,10 @@ const uploadButton = UploadButton;
 
 const ProductDetail = (props) => {
   // const product = useSelector((state) => state.products?.detailProduct);
-  const categorys = useSelector((state) => state.products?.categorys);
+  // const categorys = useSelector((state) => state.products?.categorys);
 
   const [product, setProduct] = useState(null);
+  const [categorys, setCategorys] = useState(null);
   // const [imageBase64, setImageBase64] = useState(null);
 
   const [statusProduct, setStatusProduct] = useState([]);
@@ -203,8 +204,8 @@ const ProductDetail = (props) => {
       resquest.price_buy == "" ||
       resquest.price_sell == "" ||
       resquest.amount == "" ||
-      resquest.size == "" //||
-      // resquest.catId == ("" || 0)
+      resquest.size == "" ||
+      resquest.catId == ("" || 0)
     ) {
       notification["warning"]({
         message: WARNING_INPUT,
@@ -260,11 +261,16 @@ const ProductDetail = (props) => {
   useEffect(() => {
     // fetchFakeAPI();
     async function fetch() {
-      console.log({ categorys });
-      if (!categorys) {
-        await dispatch(fetchCategorysProduct());
-      }
+      // console.log({ categorys });
+      // if (!categorys) {
+      //   await dispatch(fetchCategorysProduct());
+      // }
       // await dispatch(fetchDetailProduct(id));
+
+      await getListCategoryApi().then((res) => {
+        console.log(res?.data?.data);
+        setCategorys(res?.data?.data);
+      });
       await getProductApi(id).then((res) => {
         setProduct(res.data.data);
       });

@@ -12,7 +12,11 @@ export const updateProductURL = "./eday/admin/product/update";
 
 //category
 export const getListCategoryURL = "./eday/cat/list";
-// export const getListCategoryURL = "./eday/admin/cat/list";
+export const deteteCategoryURL = (id) => `./eday/admin/cat/${id}/deleted`;
+export const updateCategoryURL = "./eday/admin/cat/update";
+export const createCategoryURL = "./eday/admin/cat/create";
+
+// export const getListCategoryURL = "./eday/admin/cat/list"
 
 // User
 export const getAllUsersURL = "./eday/admin/user/getAllCustomer";
