@@ -190,7 +190,7 @@ const Payrolls = (props) => {
       title: "status",
       dataIndex: "status",
       key: "status",
-      render: (src) => (src == true ? "Ok" : "Not Yet"),
+      render: (src) => (src == true ? "Done Pay" : "Not Yet"),
       //render: (src) => (src ? src : NO_DATA),
     },
     {

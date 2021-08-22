@@ -114,9 +114,10 @@ const Users = (props) => {
             ></Button>
             <Button
               danger
-              onClick={() =>
-                handleDeleteUser(record?.id, record?.name, record?.stt)
-              }
+              onClick={() => {
+                console.log(record);
+                handleDeleteUser(record?.id, record?.username, record?.stt);
+              }}
               icon={<DeleteOutlined />}
             ></Button>
           </span>
@@ -157,7 +158,9 @@ const Users = (props) => {
     Modal.confirm({
       title: "Warning",
       icon: <ExclamationCircleOutlined />,
-      content: `Delete user ${name}. Once deleted, it cannot be completed ...
+      content: `Delete user ${
+        name || ""
+      }. Once deleted, it cannot be completed ...
       `,
       okText: "Delete",
       cancelText: "Cancel",
