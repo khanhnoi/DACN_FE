@@ -106,7 +106,7 @@ const Category = (props) => {
         console.log("Xu Ly Xoa");
         // Display
         deleteCategoryApi(id)
-          .then((res) => res.data)
+          // .then((res) => res.data)
           .then((res) => {
             // if (res.data) {
 
@@ -117,7 +117,7 @@ const Category = (props) => {
 
             // Display
             notification["success"]({
-              message: DELETE_CATEGORY_SUCCESS,
+              message: res.data.errormessage || DELETE_CATEGORY_SUCCESS,
               duration: 3,
             });
 
@@ -180,6 +180,10 @@ const Category = (props) => {
         <Col span={12}>
           <Button
             onClick={() => {
+              setRequestCat({
+                ...requestCat,
+                name: "",
+              });
               setVisible(true);
               setIsAdd(true);
             }}
