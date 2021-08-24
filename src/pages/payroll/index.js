@@ -223,7 +223,7 @@ const Payrolls = (props) => {
             <Button
               type="primary"
               style={{ marginRight: "10px" }}
-              disabled={record?.status}
+              disabled={record?.status || record?.contractSalary == null}
               onClick={() => {
                 console.log({ record });
                 console.log(`Edit ${record?.worker?.id}`);
